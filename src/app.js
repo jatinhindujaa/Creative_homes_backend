@@ -18,7 +18,11 @@ app.use(e.static("public"));
 app.use(cookieParser());
 
 //routes import
+// import adminRouter from "./routes/admin.route.js";
+// import propertyRouter from "./routes/property.route.js";
 
 //routes declaration
+// app.use("/api/v1/admin", adminRouter);
+// app.use("/api/v1/property", propertyRouter);
 
 export default app;
