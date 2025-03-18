@@ -28,7 +28,6 @@ const propertySchema = new Schema(
     price: {
       type: Number,
       required: true,
-      trim: true,
     },
     type: {
       type: String,
@@ -62,11 +61,11 @@ const propertySchema = new Schema(
       type: [String],
       required: true,
     },
-    agent: {
-      type: Schema.Types.ObjectId,
-      ref: "Agent",
-      required: true,
-    },
+    // agent: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Agent",
+    //   required: true,
+    // },
     status: {
       type: Boolean,
       required: true,
