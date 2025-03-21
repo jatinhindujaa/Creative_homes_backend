@@ -7,6 +7,7 @@ import {
   updateProperty,
   deleteProperty,
   getPropertyById,
+  updateMultipleImages,
 } from "../controllers/property.controller.js";
 
 const router = Router();
@@ -26,5 +27,15 @@ router.route("/delete").get(
   deleteProperty
 );
 router.route("/get-by-id").get(getPropertyById);
+router.route("/update-multiple-images").post(
+  // verifyJwt,
+  upload.fields([
+    {
+      name: "multipleImages",
+      maxCount: 14,
+    },
+  ]),
+  updateMultipleImages
+);
 
 export default router;

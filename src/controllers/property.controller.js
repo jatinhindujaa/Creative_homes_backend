@@ -16,6 +16,7 @@ const createProperty = asyncHandler(async (req, res) => {
     plot,
     shortDescription,
     description,
+    dealType,
     // agent,
   } = req.body;
 
@@ -29,7 +30,8 @@ const createProperty = asyncHandler(async (req, res) => {
     !bua ||
     !plot ||
     !shortDescription ||
-    !description
+    !description ||
+    !dealType
     // || agent
   ) {
     throw new ApiError(400, "Please fill the required fields!!!");
@@ -68,6 +70,7 @@ const createProperty = asyncHandler(async (req, res) => {
     shortDescription,
     description,
     multipleImages,
+    dealType,
     // agent,
     status: false,
   });
@@ -110,6 +113,7 @@ const updateProperty = asyncHandler(async (req, res) => {
     shortDescription,
     description,
     status,
+    dealType,
     // agent,
   } = req.body;
 
@@ -130,28 +134,8 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (shortDescription) updatedFields.shortDescription = shortDescription;
   if (description) updatedFields.description = description;
   if (status !== undefined) updatedFields.status = status;
+  if (dealType) updatedFields.dealType = dealType;
   // if (agent) updatedFields.agent = agent;
-
-  if (
-    req.files &&
-    req.files.multipleImages &&
-    req.files.multipleImages.length > 0
-  ) {
-    const multipleImages = [];
-    for (let i = 0; i < req.files.multipleImages.length; i++) {
-      const imageUrl = await uploadOnCloudinary(
-        req.files.multipleImages[i].path
-      );
-      if (!imageUrl) {
-        throw new ApiError(
-          500,
-          "Error uploading image to Cloudinary - No URL returned"
-        );
-      }
-      multipleImages.push(imageUrl);
-    }
-    updatedFields.multipleImages = multipleImages;
-  }
 
   const updatedProperty = await Property.findByIdAndUpdate(
     id,
@@ -210,10 +194,56 @@ const getPropertyById = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, property, "Property fetched successfully"));
 });
 
+const updateMultipleImages = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+  if (!req.query.id) {
+    throw new ApiError(400, "Property ID is required");
+  }
+
+  const property = await Property.findById(id);
+  if (!property) {
+    throw new ApiError(404, "Property not found");
+  }
+
+  if (
+    !req.files ||
+    !req.files.multipleImages ||
+    req.files.multipleImages.length === 0
+  ) {
+    throw new ApiError(400, "At least one image is required.");
+  }
+
+  const multipleImages = [];
+
+  for (let i = 0; i < req.files.multipleImages.length; i++) {
+    const imageUrl = await uploadOnCloudinary(req.files.multipleImages[i].path);
+    if (!imageUrl) {
+      throw new ApiError(
+        500,
+        "Error uploading image to Cloudinary - No URL returned"
+      );
+    }
+    multipleImages.push(imageUrl);
+  }
+
+  const updatedProperty = await Property.findByIdAndUpdate(
+    req.query.id,
+    { multipleImages },
+    { new: true }
+  );
+
+  res
+    .status(200)
+    .json(
+      new ApiResponse(200, updatedProperty, "Property updated successfully")
+    );
+});
+
 export {
   createProperty,
   getAllProperties,
   updateProperty,
   deleteProperty,
   getPropertyById,
+  updateMultipleImages,
 };
