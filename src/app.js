@@ -23,9 +23,11 @@ app.use(cookieParser());
 //routes import
 // import adminRouter from "./routes/admin.route.js";
 import propertyRouter from "./routes/property.route.js";
+import agentRouter from "./routes/agent.route.js";
 
 //routes declaration
 // app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/property", propertyRouter);
+app.use("/api/v1/agent", agentRouter);
 
 export default app;

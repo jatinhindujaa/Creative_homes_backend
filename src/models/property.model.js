@@ -61,6 +61,10 @@ const propertySchema = new Schema(
       type: [String],
       required: true,
     },
+    dealType: {
+      type: String,
+      required: true,
+    },
     // agent: {
     //   type: Schema.Types.ObjectId,
     //   ref: "Agent",
