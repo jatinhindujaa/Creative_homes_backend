@@ -2,10 +2,13 @@ import e from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+import multer from "multer";
 
 dotenv.config();
 
 const app = e();
+
+const upload = multer();
 
 app.use(
   cors({
@@ -19,6 +22,8 @@ app.use(e.json({ limit: "16kb" }));
 app.use(e.urlencoded({ extended: true, limit: "16kb" }));
 app.use(e.static("public"));
 app.use(cookieParser());
+
+app.use(upload.none());
 
 //routes import
 // import adminRouter from "./routes/admin.route.js";
