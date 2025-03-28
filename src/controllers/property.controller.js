@@ -239,6 +239,37 @@ const updateMultipleImages = asyncHandler(async (req, res) => {
     );
 });
 
+const deleteMultipleImage = asyncHandler(async (req, res) => {
+  const property = await Property.findById(req.query.id);
+  const { index } = req.body;
+
+  if (!property) {
+    throw new ApiError(400, "No property found!!!");
+  }
+
+  if (index === undefined || index === null) {
+    throw new ApiError(400, "Index is required!!!");
+  }
+
+  const multipleImages = property.multipleImages;
+  if (multipleImages.length <= 1) {
+    throw new ApiError(400, "Images can not be 0, add more images to delete.");
+  }
+
+  multipleImages.splice(index, 1);
+  const updatedProperty = await Property.findByIdAndUpdate(
+    req.query.id,
+    { $set: { multipleImages } },
+    { new: true }
+  );
+
+  if (!updatedProperty) {
+    throw new ApiError(500, "Something went while updating the property!!!");
+  }
+
+  res.status(200).json(new ApiResponse(200, "Image deleted.", updatedProperty));
+});
+
 export {
   createProperty,
   getAllProperties,
@@ -246,4 +277,5 @@ export {
   deleteProperty,
   getPropertyById,
   updateMultipleImages,
+  deleteMultipleImage,
 };
