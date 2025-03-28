@@ -24,6 +24,7 @@ const propertySchema = new Schema(
     features: {
       type: [String],
       required: true,
+      trim: true,
     },
     price: {
       type: Number,

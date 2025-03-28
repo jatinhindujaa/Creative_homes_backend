@@ -8,9 +8,13 @@ import {
   deleteProperty,
   getPropertyById,
   updateMultipleImages,
+  deleteMultipleImage,
 } from "../controllers/property.controller.js";
+import multer from "multer";
 
 const router = Router();
+
+const uploadText = multer();
 
 router.route("/create").post(
   // verifyJwt,
@@ -20,6 +24,7 @@ router.route("/create").post(
 router.route("/get-all").get(getAllProperties);
 router.route("/update").post(
   // verifyJwt,
+  uploadText.none(),
   updateProperty
 );
 router.route("/delete").get(
@@ -36,6 +41,10 @@ router.route("/update-multiple-images").post(
     },
   ]),
   updateMultipleImages
+);
+router.route("/delete-multiple-image").post(
+  // verifyJwt,
+  deleteMultipleImage
 );
 
 export default router;
