@@ -9,8 +9,11 @@ import {
   getAgentById,
   updateImage,
 } from "../controllers/agent.controller.js";
+import multer from "multer";
 
 const router = Router();
+
+const uploadText = multer();
 
 router.route("/create").post(
   // verifyJwt,
@@ -20,6 +23,7 @@ router.route("/create").post(
 router.route("/get-all").get(getAllAgents);
 router.route("/update").post(
   // verifyJwt,
+  uploadText.none(),
   updateAgent
 );
 router.route("/delete").get(
