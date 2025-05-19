@@ -20,15 +20,15 @@ const agentSchema = new Schema(
       required: true,
       trim: true,
     },
-    nationality: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    languages: {
-      type: [String],
-      required: true,
-    },
+    // nationality: {
+    //   type: String,
+    //   required: true,
+    //   trim: true,
+    // },
+    // languages: {
+    //   type: [String],
+    //   required: true,
+    // },
     phoneNo: {
       type: Number,
       required: true,
@@ -41,18 +41,18 @@ const agentSchema = new Schema(
       type: String,
       required: true,
     },
-    experience: {
-      type: String,
-      required: true,
-    },
-    brokerLicense: {
-      type: String,
-      required: true,
-    },
-    reraNumber: {
-      type: Number,
-      required: true,
-    },
+    // experience: {
+    //   type: String,
+    //   required: true,
+    // },
+    // brokerLicense: {
+    //   type: String,
+    //   required: true,
+    // },
+    // reraNumber: {
+    //   type: Number,
+    //   required: true,
+    // },
     about: {
       type: String,
       required: true,

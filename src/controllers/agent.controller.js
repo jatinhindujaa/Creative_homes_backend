@@ -7,27 +7,27 @@ import { Agent } from "../models/agent.model.js";
 const createAgent = asyncHandler(async (req, res) => {
   const {
     name,
-    nationality,
-    languages,
+    // nationality,
+    // languages,
     phoneNo,
     whatsapp,
     designation,
-    experience,
-    brokerLicense,
-    reraNumber,
+    // experience,
+    // brokerLicense,
+    // reraNumber,
     about,
   } = req.body;
 
   if (
     !name ||
-    !nationality ||
-    !languages ||
+    // !nationality ||
+    // !languages ||
     !phoneNo ||
     !whatsapp ||
     !designation ||
-    !experience ||
-    !brokerLicense ||
-    !reraNumber ||
+    // !experience ||
+    // !brokerLicense ||
+    // !reraNumber ||
     !about
   ) {
     throw new ApiError(400, "Please fill all required fields!!!");
@@ -44,14 +44,14 @@ const createAgent = asyncHandler(async (req, res) => {
 
   const agent = await Agent.create({
     name,
-    nationality,
-    languages,
     phoneNo,
-    whatsapp,
     designation,
-    experience,
-    brokerLicense,
-    reraNumber,
+    // nationality,
+    // languages,
+    whatsapp,
+    // experience,
+    // brokerLicense,
+    // reraNumber,
     about,
     image,
     status: false, // default status as false for approval
