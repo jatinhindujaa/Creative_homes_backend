@@ -19,7 +19,6 @@ const newsSchema = new Schema({
   },
   shortDescription: {
     type: String,
-    required: true,
   },
   description: {
     type: String,
@@ -31,7 +30,6 @@ const newsSchema = new Schema({
   },
   banner: {
     type: String,
-    required: true,
   },
   status: {
     type: Boolean,

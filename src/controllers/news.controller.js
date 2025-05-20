@@ -18,7 +18,7 @@ const getAllNews = asyncHandler(async (req, res) => {
 const createNews = asyncHandler(async (req, res) => {
   const { title, date, shortDescription, description, status } = req.body;
 
-  if (!title || !date || !shortDescription || !description) {
+  if (!title || !date  || !description) {
     throw new ApiError(
       400,
       "Please provide all required fields: title, date, short description, and description"
@@ -40,15 +40,15 @@ const createNews = asyncHandler(async (req, res) => {
     throw new ApiError(500, "Failed to upload the image. Please try again");
   }
 
-  const bannerLocalPath = req.files?.banner[0]?.path;
-  if (!bannerLocalPath) {
-    throw new ApiError(400, "Please upload a banner image");
-  }
+  // const bannerLocalPath = req.files?.banner[0]?.path;
+  // if (!bannerLocalPath) {
+  //   throw new ApiError(400, "Please upload a banner image");
+  // }
 
-  const banner = await uploadOnCloudinary(bannerLocalPath);
-  if (!banner) {
-    throw new ApiError(500, "Failed to upload the banner. Please try again");
-  }
+  // const banner = await uploadOnCloudinary(bannerLocalPath);
+  // if (!banner) {
+  //   throw new ApiError(500, "Failed to upload the banner. Please try again");
+  // }
 
   const news = await News.create({
     title,
@@ -57,7 +57,7 @@ const createNews = asyncHandler(async (req, res) => {
     description,
     status: status !== undefined ? status : true,
     image,
-    banner,
+    // banner,
   });
 
   if (!news) {
