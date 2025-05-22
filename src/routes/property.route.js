@@ -18,7 +18,11 @@ const uploadText = multer();
 
 router.route("/create").post(
   // verifyJwt,
-  upload.fields([{ name: "multipleImages", maxCount: 14 }]),
+  upload.fields([
+    { name: "multipleImages", maxCount: 14 },
+    { name: "image", maxCount: 1 },
+  ]),
+
   createProperty
 );
 router.route("/get-all").get(getAllProperties);

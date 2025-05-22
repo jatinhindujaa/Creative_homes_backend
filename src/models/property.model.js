@@ -11,6 +11,13 @@
 // multiple Images // array of string
 // agent //object Id
 //status // boolean false default because of approval
+ // agent: {
+    //   type: Schema.Types.ObjectId,
+    //   ref: "Agent",
+    //   required: true,
+    // },
+
+
 
 import mongoose, { Schema } from "mongoose";
 
@@ -22,6 +29,11 @@ const propertySchema = new Schema(
       trim: true,
     },
     features: {
+      type: [String],
+      required: true,
+      trim: true,
+    },
+    amenities: {
       type: [String],
       required: true,
       trim: true,
@@ -50,6 +62,18 @@ const propertySchema = new Schema(
       type: Number,
       required: true,
     },
+    reference: {
+      type: String,
+      required: true,
+    },
+    zone: {
+      type: String,
+      required: true,
+    },
+    dld: {
+      type: String,
+      required: true,
+    },
     shortDescription: {
       type: String,
       required: true,
@@ -66,13 +90,18 @@ const propertySchema = new Schema(
       type: String,
       required: true,
     },
-    // agent: {
-    //   type: Schema.Types.ObjectId,
-    //   ref: "Agent",
-    //   required: true,
-    // },
+
     status: {
       type: Boolean,
+      required: true,
+    },
+    image: {
+      type: String,
+      required: true,
+    },
+    agent: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Agent",
       required: true,
     },
   },

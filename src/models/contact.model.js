@@ -13,8 +13,9 @@ const contactSchema = new Schema(
       trim: true,
     },
     phone: {
-      type: Number,
+      type: String,
       required: true,
+      trim: true,
     },
     category: {
       type: String,

@@ -7,14 +7,8 @@ import { Agent } from "../models/agent.model.js";
 const createAgent = asyncHandler(async (req, res) => {
   const {
     name,
-    // nationality,
-    // languages,
     phoneNo,
-    whatsapp,
     designation,
-    // experience,
-    // brokerLicense,
-    // reraNumber,
     about,
   } = req.body;
 
@@ -23,7 +17,6 @@ const createAgent = asyncHandler(async (req, res) => {
     // !nationality ||
     // !languages ||
     !phoneNo ||
-    !whatsapp ||
     !designation ||
     // !experience ||
     // !brokerLicense ||
@@ -46,15 +39,9 @@ const createAgent = asyncHandler(async (req, res) => {
     name,
     phoneNo,
     designation,
-    // nationality,
-    // languages,
-    whatsapp,
-    // experience,
-    // brokerLicense,
-    // reraNumber,
     about,
     image,
-    status: false, // default status as false for approval
+    status: true, // default status as false for approval
   });
 
   const savedAgent = await Agent.findById(agent._id);
@@ -82,14 +69,8 @@ const updateAgent = asyncHandler(async (req, res) => {
   const { id } = req.query;
   const {
     name,
-    nationality,
-    languages,
     phoneNo,
-    whatsapp,
     designation,
-    experience,
-    brokerLicense,
-    reraNumber,
     about,
     status,
   } = req.body;
@@ -101,16 +82,12 @@ const updateAgent = asyncHandler(async (req, res) => {
 
   const updatedFields = {};
   if (name) updatedFields.name = name;
-  if (nationality) updatedFields.nationality = nationality;
-  if (languages) updatedFields.languages = languages;
   if (phoneNo) updatedFields.phoneNo = phoneNo;
-  if (whatsapp) updatedFields.whatsapp = whatsapp;
   if (designation) updatedFields.designation = designation;
-  if (experience) updatedFields.experience = experience;
-  if (brokerLicense) updatedFields.brokerLicense = brokerLicense;
-  if (reraNumber) updatedFields.reraNumber = reraNumber;
   if (about) updatedFields.about = about;
-  if (status !== undefined) updatedFields.status = status;
+if (status !== undefined) {
+  updatedFields.status = status === "true"; // ✅ convert string to boolean
+}
 
   const updatedAgent = await Agent.findByIdAndUpdate(
     id,

@@ -5,10 +5,12 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 
 const createContact = asyncHandler(async (req, res) => {
   const { name, email, phone, category, message } = req.body;
-
+  console.log("req", req.body);
+  
+  
   if (!name || !email || !phone || !category || !message) {
     throw new ApiError(400, "Please fill all required fields!!!");
-  }
+  } 
 
   const contact = await Contact.create(req.body);
 

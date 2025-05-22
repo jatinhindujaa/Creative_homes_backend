@@ -33,10 +33,7 @@ const agentSchema = new Schema(
       type: Number,
       required: true,
     },
-    whatsapp: {
-      type: Number,
-      required: true,
-    },
+    
     designation: {
       type: String,
       required: true,
