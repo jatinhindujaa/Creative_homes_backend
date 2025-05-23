@@ -3,7 +3,7 @@
 
 import mongoose, { Schema } from "mongoose";
 
-const propertySchema = new Schema(
+const offplanSchema = new Schema(
   {
     name: {
       type: String,
@@ -90,4 +90,4 @@ const propertySchema = new Schema(
   { timestamps: true }
 );
 
-export const Property = mongoose.model("Property", propertySchema);
+export const Offplan = mongoose.model("Offplan", offplanSchema);
