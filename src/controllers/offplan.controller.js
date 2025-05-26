@@ -208,13 +208,13 @@ const deleteOffplan = asyncHandler(async (req, res) => {
 });
 
 const getOffplanById = asyncHandler(async (req, res) => {
-  const { id } = req.query;
+  const { _id } = req.query;
 
-  if (!id) {
+  if (!_id) {
     throw new ApiError(400, "Offplan ID is required");
   }
 
-  const offplan = await Offplan.findById(id);
+  const offplan = await Offplan.findById(_id);
   if (!offplan) {
     throw new ApiError(404, "Offplan not found");
   }

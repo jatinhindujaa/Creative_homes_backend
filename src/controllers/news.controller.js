@@ -186,7 +186,11 @@ const updateBanner = asyncHandler(async (req, res) => {
 });
 
 const getNewsById = asyncHandler(async (req, res) => {
-  const news = await News.findById(req.query.id);
+   const { _id } = req.query;
+   if (!_id) {
+     throw new ApiError(400, "Offplan ID is required");
+   }
+  const news = await News.findById(_id);
   if (!news) {
     throw new ApiError(400, "News item not found");
   }

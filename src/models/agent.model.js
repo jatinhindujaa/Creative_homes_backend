@@ -50,6 +50,10 @@ const agentSchema = new Schema(
     //   type: Number,
     //   required: true,
     // },
+    type:{
+      type: String,
+      required: true,
+    },
     about: {
       type: String,
       required: true,

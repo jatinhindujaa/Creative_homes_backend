@@ -5,12 +5,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Agent } from "../models/agent.model.js";
 
 const createAgent = asyncHandler(async (req, res) => {
-  const {
-    name,
-    phoneNo,
-    designation,
-    about,
-  } = req.body;
+  const { name, phoneNo, designation, about, type } = req.body;
 
   if (
     !name ||
@@ -21,7 +16,8 @@ const createAgent = asyncHandler(async (req, res) => {
     // !experience ||
     // !brokerLicense ||
     // !reraNumber ||
-    !about
+    !about ||
+    !type
   ) {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
@@ -41,6 +37,7 @@ const createAgent = asyncHandler(async (req, res) => {
     designation,
     about,
     image,
+    type,
     status: true, // default status as false for approval
   });
 
@@ -67,13 +64,7 @@ const getAllAgents = asyncHandler(async (req, res) => {
 
 const updateAgent = asyncHandler(async (req, res) => {
   const { id } = req.query;
-  const {
-    name,
-    phoneNo,
-    designation,
-    about,
-    status,
-  } = req.body;
+  const { name, phoneNo, designation, about, status, type } = req.body;
 
   const agent = await Agent.findById(id);
   if (!agent) {
@@ -85,6 +76,7 @@ const updateAgent = asyncHandler(async (req, res) => {
   if (phoneNo) updatedFields.phoneNo = phoneNo;
   if (designation) updatedFields.designation = designation;
   if (about) updatedFields.about = about;
+  if(type) updatedFields.type = type;
 if (status !== undefined) {
   updatedFields.status = status === "true"; // ✅ convert string to boolean
 }
