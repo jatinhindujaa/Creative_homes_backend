@@ -41,19 +41,19 @@ const propertySchema = new Schema(
       required: true,
     },
     bed: {
-      type: Number,
+      type: String,
       required: true,
     },
     shower: {
-      type: Number,
+      type: String,
       required: true,
     },
     bua: {
-      type: Number,
+      type: String,
       required: true,
     },
     plot: {
-      type: Number,
+      type: String,
       required: true,
     },
     reference: {
