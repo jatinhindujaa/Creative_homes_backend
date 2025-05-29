@@ -120,13 +120,13 @@ const deleteAgent = asyncHandler(async (req, res) => {
 });
 
 const getAgentById = asyncHandler(async (req, res) => {
-  const { id } = req.query;
+  const { _id } = req.query;
 
-  if (!id) {
+  if (!_id) {
     throw new ApiError(400, "Agent ID is required");
   }
 
-  const agent = await Agent.findById(id);
+  const agent = await Agent.findById(_id);
   if (!agent) {
     throw new ApiError(404, "Agent not found");
   }
