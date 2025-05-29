@@ -10,7 +10,10 @@ const createProperty = asyncHandler(async (req, res) => {
     features,
     amenities,
     price,
-    type,
+    propertytype,
+    furnishingtype,
+    offeringtype,
+    propertycategory,
     bed,
     shower,
     bua,
@@ -22,14 +25,16 @@ const createProperty = asyncHandler(async (req, res) => {
     description,
     dealType,
     agent,
-    
   } = req.body;
 
   if (
     !name ||
     !features ||
     !price ||
-    !type ||
+    !propertytype ||
+    !furnishingtype||
+    !offeringtype||
+    !propertycategory||
     !bed ||
     !shower ||
     !bua ||
@@ -48,39 +53,64 @@ const createProperty = asyncHandler(async (req, res) => {
 
   const multipleImages = [];
 
-  if (
-    !req.files ||
-    !req.files.multipleImages ||
-    req.files.multipleImages.length === 0
-  ) {
-    throw new ApiError(400, "At least one image is required.");
-  }
+  // if (
+  //   !req.files ||
+  //   !req.files.multipleImages ||
+  //   req.files.multipleImages.length === 0
+  // ) {
+  //   throw new ApiError(400, "At least one image is required.");
+  // }
 
-  for (let i = 0; i < req.files.multipleImages.length; i++) {
-    const imageUrl = await uploadOnCloudinary(req.files.multipleImages[i].path);
-    if (!imageUrl) {
-      throw new ApiError(
-        500,
-        "Error uploading image to Cloudinary - No URL returned"
+  // for (let i = 0; i < req.files.multipleImages.length; i++) {
+  //   const imageUrl = await uploadOnCloudinary(req.files.multipleImages[i].path);
+  //   if (!imageUrl) {
+  //     throw new ApiError(
+  //       500,
+  //       "Error uploading image to Cloudinary - No URL returned"
+  //     );
+  //   }
+  //   multipleImages.push(imageUrl);
+  // }
+  if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
+    for (let i = 0; i < req.files.multipleImages.length; i++) {
+      const imageUrl = await uploadOnCloudinary(
+        req.files.multipleImages[i].path
       );
+      if (!imageUrl) {
+        throw new ApiError(
+          500,
+          "Error uploading image to Cloudinary - No URL returned"
+        );
+      }
+      multipleImages.push(imageUrl);
     }
-    multipleImages.push(imageUrl);
   }
-  const imageLocalPath = req.files?.image[0]?.path;
-  if (!imageLocalPath) {
-    throw new ApiError(400, "Please upload a news image");
-  }
-
-  const image = await uploadOnCloudinary(imageLocalPath);
+  // const imageLocalPath = req.files?.image[0]?.path;
+  // if (!imageLocalPath) {
+  //   throw new ApiError(400, "Please upload a news image");
+  // }
+  // const image = await uploadOnCloudinary(imageLocalPath);
+  // if (!image) {
+  //   throw new ApiError(500, "Failed to upload the image. Please try again");
+  // }
+let image = null;
+const imageLocalPath = req.files?.image?.[0]?.path;
+if (imageLocalPath) {
+  image = await uploadOnCloudinary(imageLocalPath);
   if (!image) {
     throw new ApiError(500, "Failed to upload the image. Please try again");
   }
+}
+  
   const property = await Property.create({
     name,
     features,
     amenities,
     price,
-    type,
+    propertytype,
+    furnishingtype,
+    offeringtype,
+    propertycategory,
     bed,
     shower,
     bua,
@@ -94,7 +124,7 @@ const createProperty = asyncHandler(async (req, res) => {
     dealType,
     agent,
     status: false,
-    image,
+    ...(image && { image }),
   });
 
   const savedProperty = await Property.findById(property._id);
@@ -124,11 +154,14 @@ const getAllProperties = asyncHandler(async (req, res) => {
 const updateProperty = asyncHandler(async (req, res) => {
   const { id } = req.query;
   const {
-   name,
+    name,
     features,
     amenities,
     price,
-    type,
+    propertytype,
+    furnishingtype,
+    offeringtype,
+    propertycategory,
     bed,
     shower,
     bua,
@@ -141,7 +174,6 @@ const updateProperty = asyncHandler(async (req, res) => {
     dealType,
     agent,
     status,
-    // agent,
   } = req.body;
 
   const property = await Property.findById(id);
@@ -153,7 +185,6 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (name) updatedFields.name = name;
   if (features) updatedFields.features = features;
   if (price) updatedFields.price = price;
-  if (type) updatedFields.type = type;
   if (bed) updatedFields.bed = bed;
   if (shower) updatedFields.shower = shower;
   if (bua) updatedFields.bua = bua;
@@ -167,6 +198,33 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (status !== undefined) updatedFields.status = status;
   if (dealType) updatedFields.dealType = dealType;
   if (agent) updatedFields.agent = agent;
+  if (propertytype) updatedFields.propertytype = propertytype;
+  if (furnishingtype) updatedFields.furnishingtype = furnishingtype;
+  if (offeringtype) updatedFields.offeringtype = offeringtype;
+  if (propertycategory) updatedFields.propertycategory = propertycategory;
+
+  // Handle single QR image upload if provided
+  if (req.files?.image && req.files.image.length > 0) {
+    const uploadedImage = await uploadOnCloudinary(req.files.image[0].path);
+    if (!uploadedImage) {
+      throw new ApiError(500, "Failed to upload QR image");
+    }
+    updatedFields.image = uploadedImage;
+  }
+
+  // Handle multiple property images if provided
+  if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
+    const multipleImagesUrls = [];
+    for (const file of req.files.multipleImages) {
+      const url = await uploadOnCloudinary(file.path);
+      if (!url) {
+        throw new ApiError(500, "Failed to upload one of the property images");
+      }
+      multipleImagesUrls.push(url);
+    }
+    // Optionally append or replace existing multipleImages
+    updatedFields.multipleImages = multipleImagesUrls;
+  }
 
   const updatedProperty = await Property.findByIdAndUpdate(
     id,
@@ -184,6 +242,7 @@ const updateProperty = asyncHandler(async (req, res) => {
       new ApiResponse(200, updatedProperty, "Property updated successfully")
     );
 });
+
 
 const deleteProperty = asyncHandler(async (req, res) => {
   const { id } = req.query;

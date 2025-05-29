@@ -15,10 +15,66 @@ const getAllNews = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, "News items retrieved successfully", news));
 });
 
+// const createNews = asyncHandler(async (req, res) => {
+//   const { title, date, shortDescription, description, status } = req.body;
+
+//   if (!title || !date  || !description) {
+//     throw new ApiError(
+//       400,
+//       "Please provide all required fields: title, date, short description, and description"
+//     );
+//   }
+
+//   const existingNews = await News.findOne({ title });
+//   if (existingNews) {
+//     throw new ApiError(400, "A news item with this title already exists");
+//   }
+
+//   const imageLocalPath = req.files?.image[0]?.path;
+//   // if (!imageLocalPath) {
+//   //   throw new ApiError(400, "Please upload a news image");
+//   // }
+
+//   const image = await uploadOnCloudinary(imageLocalPath);
+//   if (!image) {
+//     throw new ApiError(500, "Failed to upload the image. Please try again");
+//   }
+
+//   // const bannerLocalPath = req.files?.banner[0]?.path;
+//   // if (!bannerLocalPath) {
+//   //   throw new ApiError(400, "Please upload a banner image");
+//   // }
+
+//   // const banner = await uploadOnCloudinary(bannerLocalPath);
+//   // if (!banner) {
+//   //   throw new ApiError(500, "Failed to upload the banner. Please try again");
+//   // }
+
+//   const news = await News.create({
+//     title,
+//     date,
+//     shortDescription,
+//     description,
+//     status: status !== undefined ? status : true,
+//     image,
+//     // banner,
+//   });
+
+//   // if (!news) {
+//   //   throw new ApiError(
+//   //     500,
+//   //     "Failed to create the news item. Please try again later"
+//   //   );
+//   // }
+
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, "News item created successfully", news));
+// });
 const createNews = asyncHandler(async (req, res) => {
   const { title, date, shortDescription, description, status } = req.body;
 
-  if (!title || !date  || !description) {
+  if (!title || !date || !description) {
     throw new ApiError(
       400,
       "Please provide all required fields: title, date, short description, and description"
@@ -30,25 +86,15 @@ const createNews = asyncHandler(async (req, res) => {
     throw new ApiError(400, "A news item with this title already exists");
   }
 
-  const imageLocalPath = req.files?.image[0]?.path;
-  if (!imageLocalPath) {
-    throw new ApiError(400, "Please upload a news image");
+  const imageLocalPath = req.files?.image?.[0]?.path;
+  let image = null;
+
+  if (imageLocalPath) {
+    image = await uploadOnCloudinary(imageLocalPath);
+    if (!image) {
+      throw new ApiError(500, "Failed to upload the image. Please try again");
+    }
   }
-
-  const image = await uploadOnCloudinary(imageLocalPath);
-  if (!image) {
-    throw new ApiError(500, "Failed to upload the image. Please try again");
-  }
-
-  // const bannerLocalPath = req.files?.banner[0]?.path;
-  // if (!bannerLocalPath) {
-  //   throw new ApiError(400, "Please upload a banner image");
-  // }
-
-  // const banner = await uploadOnCloudinary(bannerLocalPath);
-  // if (!banner) {
-  //   throw new ApiError(500, "Failed to upload the banner. Please try again");
-  // }
 
   const news = await News.create({
     title,
@@ -56,16 +102,8 @@ const createNews = asyncHandler(async (req, res) => {
     shortDescription,
     description,
     status: status !== undefined ? status : true,
-    image,
-    // banner,
+    ...(image && { image }), // only add image if it exists
   });
-
-  if (!news) {
-    throw new ApiError(
-      500,
-      "Failed to create the news item. Please try again later"
-    );
-  }
 
   res
     .status(200)
@@ -119,9 +157,9 @@ const updateImage = asyncHandler(async (req, res) => {
   }
 
   const imageLocalPath = req.files?.image[0]?.path;
-  if (!imageLocalPath) {
-    throw new ApiError(400, "Please upload a new image");
-  }
+  // if (!imageLocalPath) {
+  //   throw new ApiError(400, "Please upload a new image");
+  // }
 
   const image = await uploadOnCloudinary(imageLocalPath);
   if (!image) {
@@ -153,9 +191,9 @@ const updateBanner = asyncHandler(async (req, res) => {
   }
 
   const bannerLocalPath = req.files?.banner[0]?.path;
-  if (!bannerLocalPath) {
-    throw new ApiError(400, "Please upload a new banner image");
-  }
+  // if (!bannerLocalPath) {
+  //   throw new ApiError(400, "Please upload a new banner image");
+  // }
 
   const banner = await uploadOnCloudinary(bannerLocalPath);
   if (!banner) {

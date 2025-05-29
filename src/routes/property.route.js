@@ -28,7 +28,11 @@ router.route("/create").post(
 router.route("/get-all").get(getAllProperties);
 router.route("/update").post(
   // verifyJwt,
-  uploadText.none(),
+  // uploadText.none(),
+  upload.fields([
+    { name: "multipleImages", maxCount: 14 },
+    { name: "image", maxCount: 1 },
+  ]),
   updateProperty
 );
 router.route("/delete").get(

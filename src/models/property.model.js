@@ -24,8 +24,20 @@ const propertySchema = new Schema(
       type: Number,
       required: true,
     },
-    type: {
-      type: String,
+    propertytype: {
+      type: [String],
+      required: true,
+    },
+    furnishingtype: {
+      type: [String],
+      required: true,
+    },
+    offeringtype: {
+      type: [String],
+      required: true,
+    },
+    propertycategory: {
+      type: [String],
       required: true,
     },
     bed: {
@@ -66,7 +78,7 @@ const propertySchema = new Schema(
     },
     multipleImages: {
       type: [String],
-      required: true,
+      required: false,
     },
     dealType: {
       type: String,
@@ -79,7 +91,7 @@ const propertySchema = new Schema(
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     agent: {
       type: mongoose.Schema.Types.ObjectId,

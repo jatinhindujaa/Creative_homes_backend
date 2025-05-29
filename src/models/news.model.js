@@ -26,10 +26,11 @@ const newsSchema = new Schema({
   },
   image: {
     type: String,
-    required: true,
+    required: false,
   },
   banner: {
     type: String,
+    required: false,
   },
   status: {
     type: Boolean,
