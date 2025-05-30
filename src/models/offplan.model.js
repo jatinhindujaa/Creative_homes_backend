@@ -1,7 +1,91 @@
 
 
 
+// import mongoose, { Schema } from "mongoose";
+
+// const offplanSchema = new Schema(
+//   {
+//     name: {
+//       type: String,
+//       required: true,
+//       trim: true,
+//     },
+//     Views: {
+//       type: [String],
+//       required: true,
+//       trim: true,
+//     },
+//     amenities: {
+//       type: [String],
+//       required: true,
+//       trim: true,
+//     },
+//     price: {
+//       type: Number,
+//       required: true,
+//     },
+//     shortDescription: {
+//       type: String,
+//       required: true,
+//     },
+//     description: {
+//       type: String,
+//       required: true,
+//     },
+//     multipleImages: {
+//       type: [String],
+//       required: true,
+//     },
+//     status: {
+//       type: Boolean,
+//       required: true,
+//     },
+//     image: {
+//       type: String,
+//       required: true,
+//     },
+//     agent: {
+//       type: mongoose.Schema.Types.ObjectId,
+//       ref: "Agent",
+//       required: true,
+//     },
+//   },
+//   { timestamps: true }
+// );
+
+// export const Offplan = mongoose.model("Offplan", offplanSchema);
+
+
 import mongoose, { Schema } from "mongoose";
+
+const floorPlanSchema = new Schema({
+  beds: {
+    type: Number,
+    required: true,
+  },
+  minSizeSqft: {
+    type: Number,
+    required: true,
+  },
+  maxSizeSqft: {
+    type: Number,
+    required: true,
+  },
+  icon: {
+    type: String, // Optional icon URL or name
+  },
+  description: {
+    type: String, // Optional extra info
+  },
+});
+
+const categoryFloorPlansSchema = new Schema({
+  categoryName: {
+    type: String,
+    required: true,
+  },
+  floorPlans: [floorPlanSchema],
+});
 
 const offplanSchema = new Schema(
   {
@@ -10,7 +94,7 @@ const offplanSchema = new Schema(
       required: true,
       trim: true,
     },
-    features: {
+    views: {
       type: [String],
       required: true,
       trim: true,
@@ -22,38 +106,6 @@ const offplanSchema = new Schema(
     },
     price: {
       type: Number,
-      required: true,
-    },
-    type: {
-      type: String,
-      required: true,
-    },
-    bed: {
-      type: Number,
-      required: true,
-    },
-    shower: {
-      type: Number,
-      required: true,
-    },
-    bua: {
-      type: Number,
-      required: true,
-    },
-    plot: {
-      type: Number,
-      required: true,
-    },
-    reference: {
-      type: String,
-      required: true,
-    },
-    zone: {
-      type: String,
-      required: true,
-    },
-    dld: {
-      type: String,
       required: true,
     },
     shortDescription: {
@@ -68,11 +120,6 @@ const offplanSchema = new Schema(
       type: [String],
       required: true,
     },
-    dealType: {
-      type: String,
-      required: true,
-    },
-
     status: {
       type: Boolean,
       required: true,
@@ -85,6 +132,12 @@ const offplanSchema = new Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "Agent",
       required: true,
+    },
+
+    // New embedded floor plans grouped by category
+    floorPlanCategories: {
+      type: [categoryFloorPlansSchema],
+      default: [],
     },
   },
   { timestamps: true }
