@@ -58,7 +58,7 @@ const propertySchema = new Schema(
     },
     reference: {
       type: String,
-      required: true,
+      required: false,
     },
     zone: {
       type: String,
@@ -66,7 +66,7 @@ const propertySchema = new Schema(
     },
     dld: {
       type: String,
-      required: true,
+      required: false,
     },
     shortDescription: {
       type: String,
