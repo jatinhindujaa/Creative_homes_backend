@@ -43,9 +43,9 @@ const createProperty = asyncHandler(async (req, res) => {
     !description ||
     !dealType|| 
     !agent ||
-    !reference||
+    // !reference||
     !zone||
-    !dld||
+    // !dld||
     !amenities
   ) {
     throw new ApiError(400, "Please fill the required fields!!!");
