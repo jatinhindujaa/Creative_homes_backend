@@ -430,8 +430,13 @@ const createOffplan = asyncHandler(async (req, res) => {
     views,
     amenities,
     price,
-    shortDescription,
+    firstpay,
+    underpay,
+    handoverpay,
+    developer,
+    handoverin,
     description,
+    
     agent,
     floorPlanCategories,
   } = req.body;
@@ -442,10 +447,14 @@ const createOffplan = asyncHandler(async (req, res) => {
     !views ||
     !price ||
     !amenities ||
-    !shortDescription ||
     !description ||
     !agent ||
-    !floorPlanCategories 
+    !floorPlanCategories ||
+     !firstpay||
+    !underpay||
+    !handoverpay||
+    !developer||
+    !handoverin
   ) {
     throw new ApiError(
       400,
@@ -501,13 +510,17 @@ const createOffplan = asyncHandler(async (req, res) => {
     views,
     amenities,
     price,
-    shortDescription,
+    firstpay,
+    underpay,
+    handoverpay,
+    developer,
+    handoverin,
     description,
     multipleImages,
     agent,
     image,
     floorPlanCategories,
-    status:false,
+    status: false,
   });
 
   const savedOffplan = await Offplan.findById(offplan._id);
@@ -588,7 +601,11 @@ const updateOffplan = asyncHandler(async (req, res) => {
     views,
     amenities,
     price,
-    shortDescription,
+    firstpay,
+    underpay,
+    handoverpay,
+    developer,
+    handoverin,
     description,
     agent,
     floorPlanCategories,
@@ -604,7 +621,11 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (views) updatedFields.views = views;
   if (amenities) updatedFields.amenities = amenities;
   if (price) updatedFields.price = price;
-  if (shortDescription) updatedFields.shortDescription = shortDescription;
+  if (firstpay) updatedFields.firstpay = firstpay;
+  if (underpay) updatedFields.underpay = underpay;
+  if (handoverpay) updatedFields.handoverpay = handoverpay;
+  if (developer) updatedFields.developer = developer;
+  if (handoverin) updatedFields.handoverin = handoverin;
   if (description) updatedFields.description = description;
   if (agent) updatedFields.agent = agent;
   if (floorPlanCategories)

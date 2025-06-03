@@ -6,7 +6,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const app = e();
-
+app.use(e.json({ limit: "25mb" }));
+app.use(e.urlencoded({ extended: true, limit: "25mb" }));
 app.use(
   cors({
     origin: process.env.CORS_ORIGIN,
@@ -15,8 +16,6 @@ app.use(
   })
 );
 
-app.use(e.json({ limit: "16kb" }));
-app.use(e.urlencoded({ extended: true, limit: "16kb" }));
 app.use(e.static("public"));
 app.use(cookieParser());
 

@@ -108,7 +108,23 @@ const offplanSchema = new Schema(
       type: Number,
       required: true,
     },
-    shortDescription: {
+    firstpay: {
+      type: String,
+      required: true,
+    },
+    underpay: {
+      type: String,
+      required: true,
+    },
+    handoverpay: {
+      type: String,
+      required: true,
+    },
+    developer: {
+      type: String,
+      required: true,
+    },
+    handoverin: {
       type: String,
       required: true,
     },
