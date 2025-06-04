@@ -136,6 +136,10 @@ const offplanSchema = new Schema(
       type: [String],
       required: true,
     },
+   mobilemultipleImages: {
+      type: [String],
+      required: true,
+    },
     status: {
       type: Boolean,
       required: true,

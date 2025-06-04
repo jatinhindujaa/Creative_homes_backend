@@ -52,7 +52,7 @@ const createProperty = asyncHandler(async (req, res) => {
   }
 
   const multipleImages = [];
-
+const mobilemultipleImages=[];
   // if (
   //   !req.files ||
   //   !req.files.multipleImages ||
@@ -83,6 +83,23 @@ const createProperty = asyncHandler(async (req, res) => {
         );
       }
       multipleImages.push(imageUrl);
+    }
+  }
+  if (
+    req.files?.mobilemultipleImages &&
+    req.files.mobilemultipleImages.length > 0
+  ) {
+    for (let i = 0; i < req.files.mobilemultipleImages.length; i++) {
+      const mobileImageUrl = await uploadOnCloudinary(
+        req.files.mobilemultipleImages[i].path
+      );
+      if (!mobileImageUrl) {
+        throw new ApiError(
+          500,
+          "Error uploading mobile image to Cloudinary - No URL returned"
+        );
+      }
+      mobilemultipleImages.push(mobileImageUrl); // Push to mobilemultipleImages
     }
   }
   // const imageLocalPath = req.files?.image[0]?.path;
@@ -121,6 +138,7 @@ if (imageLocalPath) {
     shortDescription,
     description,
     multipleImages,
+    mobilemultipleImages,
     dealType,
     agent,
     status: false,
@@ -225,7 +243,24 @@ const updateProperty = asyncHandler(async (req, res) => {
     // Optionally append or replace existing multipleImages
     updatedFields.multipleImages = multipleImagesUrls;
   }
-
+ if (
+   req.files?.mobilemultipleImages &&
+   req.files.mobilemultipleImages.length > 0
+ ) {
+   const mobilemultipleImagesUrls = [];
+   for (const file of req.files.mobilemultipleImages) {
+     const mobileImageUrl = await uploadOnCloudinary(file.path);
+     if (!mobileImageUrl) {
+       throw new ApiError(
+         500,
+         "Failed to upload one of the mobile property images"
+       );
+     }
+     mobilemultipleImagesUrls.push(mobileImageUrl);
+   }
+   // Optionally append or replace existing mobilemultipleImages
+   updatedFields.mobilemultipleImages = mobilemultipleImagesUrls;
+ }
   const updatedProperty = await Property.findByIdAndUpdate(
     id,
     { $set: updatedFields },

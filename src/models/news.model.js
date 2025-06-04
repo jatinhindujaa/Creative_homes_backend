@@ -28,7 +28,7 @@ const newsSchema = new Schema({
     type: String,
     required: false,
   },
-  banner: {
+  mobileImage: {
     type: String,
     required: false,
   },

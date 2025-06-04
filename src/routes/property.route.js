@@ -20,6 +20,7 @@ router.route("/create").post(
   // verifyJwt,
   upload.fields([
     { name: "multipleImages", maxCount: 14 },
+    { name: "mobilemultipleImages", maxCount: 14 },
     { name: "image", maxCount: 1 },
   ]),
 
@@ -31,6 +32,7 @@ router.route("/update").post(
   // uploadText.none(),
   upload.fields([
     { name: "multipleImages", maxCount: 14 },
+    { name: "mobilemultipleImages", maxCount: 14 },
     { name: "image", maxCount: 1 },
   ]),
   updateProperty

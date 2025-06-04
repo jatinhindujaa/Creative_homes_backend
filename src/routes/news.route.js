@@ -17,7 +17,7 @@ router.route("/create").post(
   //   verifyJwt,
   upload.fields([
     { name: "image", maxCount: 1 },
-    { name: "banner", maxCount: 1 },
+    { name: "mobileImage", maxCount: 1 },
   ]),
   createNews
 );
@@ -32,7 +32,10 @@ router.route("/delete").get(
 );
 router.route("/update-image").post(
   // verifyJwt,
-  upload.fields([{ name: "image", maxCount: 1 }]),
+  upload.fields([
+    { name: "image", maxCount: 1 },
+    { name: "mobileImage", maxCount: 1 },
+  ]),
   updateImage
 );
 router.route("/update-banner").post(

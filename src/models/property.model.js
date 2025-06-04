@@ -80,6 +80,10 @@ const propertySchema = new Schema(
       type: [String],
       required: false,
     },
+    mobilemultipleImages: {
+      type: [String],
+      required: false,
+    },
     dealType: {
       type: String,
       required: true,
