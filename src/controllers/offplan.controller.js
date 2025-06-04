@@ -461,6 +461,8 @@ const createOffplan = asyncHandler(async (req, res) => {
       "Please fill all required fields including views, status and floorPlanCategories"
     );
   }
+    const multipleImages = [];
+    const mobilemultipleImages = [];
 
   if (!Array.isArray(views) || views.length === 0) {
     throw new ApiError(400, "views must be a non-empty array");
@@ -470,7 +472,6 @@ const createOffplan = asyncHandler(async (req, res) => {
     throw new ApiError(400, "floorPlanCategories must be a non-empty array");
   }
 
-  const multipleImages = [];
 
   if (
     !req.files ||
@@ -490,7 +491,23 @@ const createOffplan = asyncHandler(async (req, res) => {
     }
     multipleImages.push(imageUrl);
   }
-
+if (
+  req.files?.mobilemultipleImages &&
+  req.files.mobilemultipleImages.length > 0
+) {
+  for (let i = 0; i < req.files.mobilemultipleImages.length; i++) {
+    const mobileImageUrl = await uploadOnCloudinary(
+      req.files.mobilemultipleImages[i].path
+    );
+    if (!mobileImageUrl) {
+      throw new ApiError(
+        500,
+        "Error uploading mobile image to Cloudinary - No URL returned"
+      );
+    }
+    mobilemultipleImages.push(mobileImageUrl); // Push to mobilemultipleImages
+  }
+}
   const imageLocalPath = req.files?.image?.[0]?.path;
   if (!imageLocalPath) {
     throw new ApiError(400, "Please upload a main image");
@@ -517,6 +534,7 @@ const createOffplan = asyncHandler(async (req, res) => {
     handoverin,
     description,
     multipleImages,
+    mobilemultipleImages,
     agent,
     image,
     floorPlanCategories,
@@ -630,7 +648,45 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (agent) updatedFields.agent = agent;
   if (floorPlanCategories)
     updatedFields.floorPlanCategories = floorPlanCategories;
+ if (req.files?.image && req.files.image.length > 0) {
+   const uploadedImage = await uploadOnCloudinary(req.files.image[0].path);
+   if (!uploadedImage) {
+     throw new ApiError(500, "Failed to upload QR image");
+   }
+   updatedFields.image = uploadedImage;
+ }
 
+ // Handle multiple property images if provided
+ if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
+   const multipleImagesUrls = [];
+   for (const file of req.files.multipleImages) {
+     const url = await uploadOnCloudinary(file.path);
+     if (!url) {
+       throw new ApiError(500, "Failed to upload one of the property images");
+     }
+     multipleImagesUrls.push(url);
+   }
+   // Optionally append or replace existing multipleImages
+   updatedFields.multipleImages = multipleImagesUrls;
+ }
+ if (
+   req.files?.mobilemultipleImages &&
+   req.files.mobilemultipleImages.length > 0
+ ) {
+   const mobilemultipleImagesUrls = [];
+   for (const file of req.files.mobilemultipleImages) {
+     const mobileImageUrl = await uploadOnCloudinary(file.path);
+     if (!mobileImageUrl) {
+       throw new ApiError(
+         500,
+         "Failed to upload one of the mobile property images"
+       );
+     }
+     mobilemultipleImagesUrls.push(mobileImageUrl);
+   }
+   // Optionally append or replace existing mobilemultipleImages
+   updatedFields.mobilemultipleImages = mobilemultipleImagesUrls;
+ }
   const updatedOffplan = await Offplan.findByIdAndUpdate(
     id,
     { $set: updatedFields },
