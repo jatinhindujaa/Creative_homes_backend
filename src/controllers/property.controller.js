@@ -303,13 +303,13 @@ const deleteProperty = asyncHandler(async (req, res) => {
 });
 
 const getPropertyById = asyncHandler(async (req, res) => {
-  const { id } = req.query;
+  const { _id } = req.query;
 
-  if (!id) {
+  if (!_id) {
     throw new ApiError(400, "Property ID is required");
   }
 
-  const property = await Property.findById(id);
+  const property = await Property.findById(_id);
   if (!property) {
     throw new ApiError(404, "Property not found");
   }

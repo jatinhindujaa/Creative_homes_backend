@@ -28,6 +28,8 @@ import listRouter from "./routes/listproperty.route.js";
 import newsRouter from "./routes/news.route.js";
 import teamRouter from "./routes/team.route.js";
 import offplanRouter from "./routes/offplan.route.js";
+import areaRouter from "./routes/areas.route.js";
+
 
 
 //routes declaration
@@ -39,6 +41,8 @@ app.use("/api/v1/listyourproperty", listRouter);
 app.use("/api/v1/news", newsRouter);
 app.use("/api/v1/team", teamRouter);
 app.use("/api/v1/offplan", offplanRouter);
+app.use("/api/v1/area", areaRouter);
+
 
 
 export default app;
