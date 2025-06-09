@@ -25,6 +25,7 @@ const createProperty = asyncHandler(async (req, res) => {
     description,
     dealType,
     agent,
+    area,
   } = req.body;
 
   if (
@@ -32,21 +33,22 @@ const createProperty = asyncHandler(async (req, res) => {
     !features ||
     !price ||
     !propertytype ||
-    !furnishingtype||
-    !offeringtype||
-    !propertycategory||
+    !furnishingtype ||
+    !offeringtype ||
+    !propertycategory ||
     !bed ||
     !shower ||
     !bua ||
     !plot ||
     !shortDescription ||
     !description ||
-    !dealType|| 
+    !dealType ||
     !agent ||
     // !reference||
-    !zone||
+    !zone ||
     // !dld||
-    !amenities
+    !amenities ||
+    !area
   ) {
     throw new ApiError(400, "Please fill the required fields!!!");
   }
@@ -141,6 +143,7 @@ if (imageLocalPath) {
     mobilemultipleImages,
     dealType,
     agent,
+    area,
     status: false,
     ...(image && { image }),
   });
@@ -192,6 +195,7 @@ const updateProperty = asyncHandler(async (req, res) => {
     dealType,
     agent,
     status,
+    area,
   } = req.body;
 
   const property = await Property.findById(id);
@@ -216,6 +220,7 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (status !== undefined) updatedFields.status = status;
   if (dealType) updatedFields.dealType = dealType;
   if (agent) updatedFields.agent = agent;
+  if (area) updatedFields.area = area;
   if (propertytype) updatedFields.propertytype = propertytype;
   if (furnishingtype) updatedFields.furnishingtype = furnishingtype;
   if (offeringtype) updatedFields.offeringtype = offeringtype;

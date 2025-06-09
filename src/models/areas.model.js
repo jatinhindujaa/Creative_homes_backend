@@ -8,6 +8,11 @@ const areaSchema = new Schema(
       required: true,
       trim: true,
     },
+    // languages:{
+    //   type: String,
+    //   required: FALSE,
+    //   trim: true,
+    // },
     order: {
       type: Number,
       required: false,

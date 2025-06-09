@@ -7,10 +7,7 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 const createArea = asyncHandler(async (req, res) => {
   const { name, order } = req.body;
 
-  if (
-    !name ||
-    !order
-  ) {
+  if (!name || !order) {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
 
@@ -55,9 +52,9 @@ if (mobileImageLocalPath) {
 
 const getAllAreas = asyncHandler(async (req, res) => {
   const areas = await Area.find();
-  if (!areas || areas.length === 0) {
-    throw new ApiError(500, "Something went wrong while fetching the Areas");
-  }
+  // if (!areas || areas.length === 0) {
+  //   throw new ApiError(500, "Something went wrong while fetching the Areas");
+  // }
 
   res
     .status(200)

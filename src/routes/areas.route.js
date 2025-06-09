@@ -9,7 +9,7 @@ import {
   updateImage,
 } from "../controllers/agent.controller.js";
 import multer from "multer";
-import { createArea, getAllAreas } from "../controllers/areas.controller.js";
+import { createArea, deleteArea, getAllAreas } from "../controllers/areas.controller.js";
 
 const router = Router();
 
@@ -31,7 +31,7 @@ router.route("/update").post(
 );
 router.route("/delete").get(
   // verifyJwt,
-  deleteAgent
+  deleteArea
 );
 router.route("/get-by-id").get(getAgentById);
 router.route("/update-image").post(

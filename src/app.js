@@ -19,7 +19,6 @@ app.use(
 app.use(e.static("public"));
 app.use(cookieParser());
 
-//routes import
 // import adminRouter from "./routes/admin.route.js";
 import propertyRouter from "./routes/property.route.js";
 import agentRouter from "./routes/agent.route.js";

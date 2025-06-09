@@ -5,15 +5,24 @@ import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Agent } from "../models/agent.model.js";
 
 const createAgent = asyncHandler(async (req, res) => {
-  const { name, phoneNo, designation, about, type } = req.body;
+  const {
+    name,
+    phoneNo,
+    designation,
+    about,
+    type,
+    languages,
+    experience,
+    order,
+  } = req.body;
 
   if (
     !name ||
-    // !nationality ||
-    // !languages ||
+    !order ||
+    !languages ||
     !phoneNo ||
     !designation ||
-    // !experience ||
+    !experience ||
     // !brokerLicense ||
     // !reraNumber ||
     !about ||
@@ -21,6 +30,7 @@ const createAgent = asyncHandler(async (req, res) => {
   ) {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
+  
 
   const imageLocalPath = req.files?.image[0]?.path;
   if (!imageLocalPath) {
@@ -37,7 +47,10 @@ const createAgent = asyncHandler(async (req, res) => {
     designation,
     about,
     image,
+    order,
     type,
+    experience,
+    languages,
     status: true, // default status as false for approval
   });
 
@@ -64,7 +77,7 @@ const getAllAgents = asyncHandler(async (req, res) => {
 
 const updateAgent = asyncHandler(async (req, res) => {
   const { id } = req.query;
-  const { name, phoneNo, designation, about, status, type } = req.body;
+  const { name, phoneNo, order, designation,experience,languages, about, status, type } = req.body;
 
   const agent = await Agent.findById(id);
   if (!agent) {
@@ -76,6 +89,11 @@ const updateAgent = asyncHandler(async (req, res) => {
   if (phoneNo) updatedFields.phoneNo = phoneNo;
   if (designation) updatedFields.designation = designation;
   if (about) updatedFields.about = about;
+  if (experience) updatedFields.experience = experience;
+  if (languages) updatedFields.languages = languages;
+  if (order) updatedFields.order = order;
+
+  
   if(type) updatedFields.type = type;
 if (status !== undefined) {
   updatedFields.status = status === "true"; // ✅ convert string to boolean
