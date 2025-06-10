@@ -9,6 +9,7 @@ import {
   updateImage,
   updateBanner,
   getNewsById,
+  updateMobileImage,
 } from "../controllers/news.controller.js";
 
 const router = Router();
@@ -34,9 +35,17 @@ router.route("/update-image").post(
   // verifyJwt,
   upload.fields([
     { name: "image", maxCount: 1 },
-    { name: "mobileImage", maxCount: 1 },
   ]),
   updateImage
+);
+
+
+router.route("/update-mobile-image").post(
+  // verifyJwt,
+  upload.fields([
+    { name: "mobileImage", maxCount: 1 },
+  ]),
+  updateMobileImage
 );
 router.route("/update-banner").post(
   // verifyJwt,

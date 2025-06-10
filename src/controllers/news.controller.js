@@ -195,62 +195,151 @@ const deleteNews = asyncHandler(async (req, res) => {
 //     .status(200)
 //     .json(new ApiResponse(200, "News image updated successfully", updatedNews));
 // });
+// const updateImage = asyncHandler(async (req, res) => {
+//   const doesExists = await News.findById(req.query.id);
+//   if (!doesExists) {
+//     throw new ApiError(400, "News item not found");
+//   }
+
+//   const imageLocalPath = req.files?.image?.[0]?.path;
+//   const mobileImageLocalPath = req.files?.mobileImage?.[0]?.path;
+
+//   let image = null;
+//   let mobileImage = null;
+
+//   // Upload the main image if it's provided
+//   if (imageLocalPath) {
+//     image = await uploadOnCloudinary(imageLocalPath);
+//     if (!image) {
+//       throw new ApiError(
+//         500,
+//         "Failed to upload the new image. Please try again"
+//       );
+//     }
+//   }
+
+//   // Upload the mobile image if it's provided
+//   if (mobileImageLocalPath) {
+//     mobileImage = await uploadOnCloudinary(mobileImageLocalPath);
+//     if (!mobileImage) {
+//       throw new ApiError(
+//         500,
+//         "Failed to upload the mobile image. Please try again"
+//       );
+//     }
+//   }
+
+//   // Prepare the update object
+//   const updateData = {};
+//   if (image) updateData.image = image;
+//   if (mobileImage) updateData.mobileImage = mobileImage;
+
+//   const updatedNews = await News.findByIdAndUpdate(
+//     req.query.id,
+//     { $set: updateData },
+//     { new: true }
+//   );
+
+//   if (!updatedNews) {
+//     throw new ApiError(
+//       500,
+//       "Failed to update the news image. Please try again"
+//     );
+//   }
+
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, "News image updated successfully", updatedNews));
+// });'
+const uploadImage = async (filePath, imageType) => {
+  const image = await uploadOnCloudinary(filePath);
+  if (!image) {
+    throw new ApiError(
+      500,
+      `Failed to upload the ${imageType} image. Please try again`
+    );
+  }
+  return image;
+};
+
+const updateNewsImageField = async (id, imageType, imageLocalPath) => {
+  if (imageLocalPath) {
+    const image = await uploadImage(imageLocalPath, imageType);
+    const updateData = { [imageType]: image };
+
+    const updatedNews = await News.findByIdAndUpdate(
+      id,
+      { $set: updateData },
+      { new: true }
+    );
+
+    if (!updatedNews) {
+      throw new ApiError(
+        500,
+        `Failed to update the ${imageType} image. Please try again`
+      );
+    }
+
+    return updatedNews;
+  }
+  return null; // No image provided
+};
+
+
 const updateImage = asyncHandler(async (req, res) => {
-  const doesExists = await News.findById(req.query.id);
-  if (!doesExists) {
+  const { id } = req.query;
+
+  const doesExist = await News.findById(id);
+  if (!doesExist) {
     throw new ApiError(400, "News item not found");
   }
 
   const imageLocalPath = req.files?.image?.[0]?.path;
+
+  const updatedNews = await updateNewsImageField(id, "image", imageLocalPath);
+  if (updatedNews) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(200, "News image updated successfully", updatedNews)
+      );
+  }
+
+  res.status(400).json(new ApiResponse(400, "No image provided to update"));
+});
+
+const updateMobileImage = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+
+  const doesExist = await News.findById(id);
+  if (!doesExist) {
+    throw new ApiError(400, "News item not found");
+  }
+
   const mobileImageLocalPath = req.files?.mobileImage?.[0]?.path;
 
-  let image = null;
-  let mobileImage = null;
-
-  // Upload the main image if it's provided
-  if (imageLocalPath) {
-    image = await uploadOnCloudinary(imageLocalPath);
-    if (!image) {
-      throw new ApiError(
-        500,
-        "Failed to upload the new image. Please try again"
-      );
-    }
-  }
-
-  // Upload the mobile image if it's provided
-  if (mobileImageLocalPath) {
-    mobileImage = await uploadOnCloudinary(mobileImageLocalPath);
-    if (!mobileImage) {
-      throw new ApiError(
-        500,
-        "Failed to upload the mobile image. Please try again"
-      );
-    }
-  }
-
-  // Prepare the update object
-  const updateData = {};
-  if (image) updateData.image = image;
-  if (mobileImage) updateData.mobileImage = mobileImage;
-
-  const updatedNews = await News.findByIdAndUpdate(
-    req.query.id,
-    { $set: updateData },
-    { new: true }
+  const updatedNews = await updateNewsImageField(
+    id,
+    "mobileImage",
+    mobileImageLocalPath
   );
-
-  if (!updatedNews) {
-    throw new ApiError(
-      500,
-      "Failed to update the news image. Please try again"
-    );
+  if (updatedNews) {
+    return res
+      .status(200)
+      .json(
+        new ApiResponse(
+          200,
+          "News mobile image updated successfully",
+          updatedNews
+        )
+      );
   }
 
   res
-    .status(200)
-    .json(new ApiResponse(200, "News image updated successfully", updatedNews));
+    .status(400)
+    .json(new ApiResponse(400, "No mobile image provided to update"));
 });
+
 
 
 const updateBanner = asyncHandler(async (req, res) => {
@@ -315,4 +404,5 @@ export {
   updateImage,
   updateBanner,
   getNewsById,
+  updateMobileImage,
 };

@@ -323,6 +323,38 @@ const getPropertyById = asyncHandler(async (req, res) => {
     .status(200)
     .json(new ApiResponse(200, property, "Property fetched successfully"));
 });
+// const getPropertyByAgentId = asyncHandler(async (req, res) => {
+//   const { agent } = req.query;
+
+
+//   const property = await Property.findById(agent);
+//   if (!property) {
+//     throw new ApiError(404, "Property not found");
+//   }
+
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, property, "Property fetched successfully"));
+// });
+
+const getPropertyByAgentId = asyncHandler(async (req, res) => {
+  const { agent } = req.query; // Extract agent ID from query
+
+  if (!agent) {
+    throw new ApiError(400, "Agent ID is required");
+  }
+
+  // Find properties associated with the agent
+  const properties = await Property.find({ agent: agent }); // Assuming agent is a field in the Property model
+
+  if (!properties || properties.length === 0) {
+    throw new ApiError(404, "No properties found for this agent");
+  }
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, properties, "Properties fetched successfully"));
+});
 
 const updateMultipleImages = asyncHandler(async (req, res) => {
   const { id } = req.query;
@@ -408,4 +440,5 @@ export {
   getPropertyById,
   updateMultipleImages,
   deleteMultipleImage,
+  getPropertyByAgentId,
 };
