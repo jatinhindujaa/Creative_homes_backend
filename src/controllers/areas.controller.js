@@ -11,32 +11,43 @@ const createArea = asyncHandler(async (req, res) => {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
 
-const imageLocalPath = req.files?.image?.[0]?.path;
-const mobileImageLocalPath = req.files?.mobileImage?.[0]?.path;
-let image = null;
-let mobileImage = null;
-if (imageLocalPath) {
-  image = await uploadOnCloudinary(imageLocalPath);
-  if (!image) {
-    throw new ApiError(500, "Failed to upload the image. Please try again");
+const multipleImages = [];
+const mobilemultipleImages = [];
+if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
+  for (let i = 0; i < req.files.multipleImages.length; i++) {
+    const imageUrl = await uploadOnCloudinary(req.files.multipleImages[i].path);
+    if (!imageUrl) {
+      throw new ApiError(
+        500,
+        "Error uploading image to Cloudinary - No URL returned"
+      );
+    }
+    multipleImages.push(imageUrl);
   }
 }
-
-if (mobileImageLocalPath) {
-  mobileImage = await uploadOnCloudinary(mobileImageLocalPath); // Upload mobile image to Cloudinary
-  if (!mobileImage) {
-    throw new ApiError(
-      500,
-      "Failed to upload the mobile image. Please try again"
+if (
+  req.files?.mobilemultipleImages &&
+  req.files.mobilemultipleImages.length > 0
+) {
+  for (let i = 0; i < req.files.mobilemultipleImages.length; i++) {
+    const mobileImageUrl = await uploadOnCloudinary(
+      req.files.mobilemultipleImages[i].path
     );
+    if (!mobileImageUrl) {
+      throw new ApiError(
+        500,
+        "Error uploading mobile image to Cloudinary - No URL returned"
+      );
+    }
+    mobilemultipleImages.push(mobileImageUrl); // Push to mobilemultipleImages
   }
 }
 
   const area = await Area.create({
     name,
     order,
-    ...(image && { image }), // only add image if it exists
-    ...(mobileImage && { mobileImage }),
+    multipleImages,
+    mobilemultipleImages,
     status: true, // default status as false for approval
   });
 
@@ -52,9 +63,9 @@ if (mobileImageLocalPath) {
 
 const getAllAreas = asyncHandler(async (req, res) => {
   const areas = await Area.find();
-  // if (!areas || areas.length === 0) {
-  //   throw new ApiError(500, "Something went wrong while fetching the Areas");
-  // }
+  if (!areas || areas.length === 0) {
+    throw new ApiError(500, "Something went wrong while fetching the Areas");
+  }
 
   res
     .status(200)
@@ -79,7 +90,36 @@ const updateArea = asyncHandler(async (req, res) => {
   if (status !== undefined) {
     updatedFields.status = status === "true"; // ✅ convert string to boolean
   }
-
+if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
+  const multipleImagesUrls = [];
+  for (const file of req.files.multipleImages) {
+    const url = await uploadOnCloudinary(file.path);
+    if (!url) {
+      throw new ApiError(500, "Failed to upload one of the property images");
+    }
+    multipleImagesUrls.push(url);
+  }
+  // Optionally append or replace existing multipleImages
+  updatedFields.multipleImages = multipleImagesUrls;
+}
+if (
+  req.files?.mobilemultipleImages &&
+  req.files.mobilemultipleImages.length > 0
+) {
+  const mobilemultipleImagesUrls = [];
+  for (const file of req.files.mobilemultipleImages) {
+    const mobileImageUrl = await uploadOnCloudinary(file.path);
+    if (!mobileImageUrl) {
+      throw new ApiError(
+        500,
+        "Failed to upload one of the mobile property images"
+      );
+    }
+    mobilemultipleImagesUrls.push(mobileImageUrl);
+  }
+  // Optionally append or replace existing mobilemultipleImages
+  updatedFields.mobilemultipleImages = mobilemultipleImagesUrls;
+}
   const updatedArea = await Area.findByIdAndUpdate(
     id,
     { $set: updatedFields },
@@ -171,7 +211,40 @@ const updateImage = asyncHandler(async (req, res) => {
       new ApiResponse(200, "Area Image updated successfully", updatedArea)
     );
 });
+const updatemobileImage = asyncHandler(async (req, res) => {
+  const { id } = req.query;
+  if (!req.query.id) {
+    throw new ApiError(400, "Area ID is required");
+  }
 
+  const area = await Area.findById(id);
+  if (!area) {
+    throw new ApiError(404, "Area not found");
+  }
+
+  const imageLocalPath = req.files?.mobileImage[0]?.path;
+  if (!imageLocalPath) {
+    throw new ApiError(400, "Area image is required");
+  }
+
+  const image = await uploadOnCloudinary(imageLocalPath);
+  if (!image) {
+    throw new ApiError(500, "Error uploading image to Cloudinary");
+  }
+
+  const updatedArea = await Area.findByIdAndUpdate(
+    req.query.id,
+    { $set: { image } },
+    { new: true }
+  );
+  if (!updatedArea) {
+    throw new ApiError(500, "Something went wrong while updating area image");
+  }
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, "Area Image updated successfully", updatedArea));
+});
 export {
   createArea,
   getAllAreas,
@@ -179,4 +252,5 @@ export {
   deleteArea,
   getAreaById,
   updateImage,
+  updatemobileImage,
 };

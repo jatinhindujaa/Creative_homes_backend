@@ -55,24 +55,6 @@ const createProperty = asyncHandler(async (req, res) => {
 
   const multipleImages = [];
 const mobilemultipleImages=[];
-  // if (
-  //   !req.files ||
-  //   !req.files.multipleImages ||
-  //   req.files.multipleImages.length === 0
-  // ) {
-  //   throw new ApiError(400, "At least one image is required.");
-  // }
-
-  // for (let i = 0; i < req.files.multipleImages.length; i++) {
-  //   const imageUrl = await uploadOnCloudinary(req.files.multipleImages[i].path);
-  //   if (!imageUrl) {
-  //     throw new ApiError(
-  //       500,
-  //       "Error uploading image to Cloudinary - No URL returned"
-  //     );
-  //   }
-  //   multipleImages.push(imageUrl);
-  // }
   if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
     for (let i = 0; i < req.files.multipleImages.length; i++) {
       const imageUrl = await uploadOnCloudinary(
@@ -104,14 +86,6 @@ const mobilemultipleImages=[];
       mobilemultipleImages.push(mobileImageUrl); // Push to mobilemultipleImages
     }
   }
-  // const imageLocalPath = req.files?.image[0]?.path;
-  // if (!imageLocalPath) {
-  //   throw new ApiError(400, "Please upload a news image");
-  // }
-  // const image = await uploadOnCloudinary(imageLocalPath);
-  // if (!image) {
-  //   throw new ApiError(500, "Failed to upload the image. Please try again");
-  // }
 let image = null;
 const imageLocalPath = req.files?.image?.[0]?.path;
 if (imageLocalPath) {
@@ -346,6 +320,25 @@ const getPropertyByAgentId = asyncHandler(async (req, res) => {
 
   // Find properties associated with the agent
   const properties = await Property.find({ agent: agent }); // Assuming agent is a field in the Property model
+
+  if (!properties || properties.length === 0) {
+    throw new ApiError(404, "No properties found for this agent");
+  }
+
+  res
+    .status(200)
+    .json(new ApiResponse(200, properties, "Properties fetched successfully"));
+});
+
+const getPropertyByAreaId = asyncHandler(async (req, res) => {
+  const { area } = req.query; // Extract agent ID from query
+
+  if (!area) {
+    throw new ApiError(400, "Area ID is required");
+  }
+
+  // Find properties associated with the agent
+  const properties = await Property.find({ area: area }); // Assuming agent is a field in the Property model
 
   if (!properties || properties.length === 0) {
     throw new ApiError(404, "No properties found for this agent");

@@ -105,7 +105,7 @@ const propertySchema = new Schema(
     area: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Area",
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }

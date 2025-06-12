@@ -24,12 +24,12 @@ const newsSchema = new Schema({
     type: String,
     required: true,
   },
-  image: {
-    type: String,
+  multipleImages: {
+    type: [String],
     required: false,
   },
-  mobileImage: {
-    type: String,
+  mobilemultipleImages: {
+    type: [String],
     required: false,
   },
   status: {

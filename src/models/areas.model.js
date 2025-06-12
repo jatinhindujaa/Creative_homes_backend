@@ -18,12 +18,12 @@ const areaSchema = new Schema(
       required: false,
       trim: true,
     },
-    image: {
-      type: String,
+    multipleImages: {
+      type: [String],
       required: true,
     },
-    mobileImage: {
-      type: String,
+    mobilemultipleImages: {
+      type: [String],
       required: true,
     },
     status: {

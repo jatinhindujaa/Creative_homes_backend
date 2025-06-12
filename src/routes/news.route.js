@@ -17,14 +17,18 @@ const router = Router();
 router.route("/create").post(
   //   verifyJwt,
   upload.fields([
-    { name: "image", maxCount: 1 },
-    { name: "mobileImage", maxCount: 1 },
+    { name: "multipleImages", maxCount: 1 },
+    { name: "mobilemultipleImages", maxCount: 1 },
   ]),
   createNews
 );
 router.route("/get-all").get(getAllNews);
 router.route("/update").post(
   // verifyJwt,
+  upload.fields([
+    { name: "multipleImages", maxCount: 1 },
+    { name: "mobilemultipleImages", maxCount: 1 },
+  ]),
   updateNews
 );
 router.route("/delete").get(
