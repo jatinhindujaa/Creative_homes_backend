@@ -2,6 +2,7 @@ import { Contact } from "../models/contact.model.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { Whtsap } from "../models/whtsap.model.js";
 
 const createContact = asyncHandler(async (req, res) => {
   const { name, email, phone, category, message } = req.body;
@@ -13,6 +14,22 @@ const createContact = asyncHandler(async (req, res) => {
   } 
 
   const contact = await Contact.create(req.body);
+
+  if (!contact) {
+    throw new ApiError(500, "Something went wrong while creating the contact");
+  }
+
+  res.status(200).json(new ApiResponse(200, "Contact created!!!", contact));
+});
+const createWhtsap = asyncHandler(async (req, res) => {
+  const { type, phone } = req.body;
+  console.log("req", req.body);
+
+  if (!type || !phone) {
+    throw new ApiError(400, "Please fill all required fields!!!");
+  }
+
+  const contact = await Whtsap.create(req.body);
 
   if (!contact) {
     throw new ApiError(500, "Something went wrong while creating the contact");
@@ -48,4 +65,4 @@ const deleteContact = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Contact deleted!!!"));
 });
 
-export { createContact, getAllContacts, deleteContact };
+export { createContact, getAllContacts, deleteContact, createWhtsap };

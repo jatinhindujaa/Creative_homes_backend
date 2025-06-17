@@ -154,7 +154,6 @@ const offplanSchema = new Schema(
       required: true,
     },
 
-    // New embedded floor plans grouped by category
     floorPlanCategories: {
       type: [categoryFloorPlansSchema],
       default: [],
