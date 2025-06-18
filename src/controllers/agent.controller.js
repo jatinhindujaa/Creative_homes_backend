@@ -16,20 +16,20 @@ const createAgent = asyncHandler(async (req, res) => {
     order,
   } = req.body;
 
-  if (
-    !name ||
-    !order ||
-    !languages ||
-    !phoneNo ||
-    !designation ||
-    !experience ||
-    // !brokerLicense ||
-    // !reraNumber ||
-    !about ||
-    !type
-  ) {
-    throw new ApiError(400, "Please fill all required fields!!!");
-  }
+  // if (
+  //   !name ||
+  //   !order ||
+  //   !languages ||
+  //   !phoneNo ||
+  //   !designation ||
+  //   !experience ||
+  //   // !brokerLicense ||
+  //   // !reraNumber ||
+  //   !about ||
+  //   !type
+  // ) {
+  //   throw new ApiError(400, "Please fill all required fields!!!");
+  // }
   
 
   const imageLocalPath = req.files?.image[0]?.path;
