@@ -17,7 +17,7 @@ const agentSchema = new Schema(
   {
     name: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
     },
     order: {
@@ -32,21 +32,21 @@ const agentSchema = new Schema(
     // },
     languages: {
       type: [String],
-      required: true,
+      required: false,
       trim: true,
     },
     phoneNo: {
       type: Number,
-      required: true,
+      required: false,
     },
 
     designation: {
       type: String,
-      required: true,
+      required: false,
     },
     experience: {
       type: String,
-      required: true,
+      required: false,
     },
     // brokerLicense: {
     //   type: String,
@@ -58,20 +58,20 @@ const agentSchema = new Schema(
     // },
     type: {
       type: [String],
-      required: true,
+      required: false,
     },
 
     about: {
       type: String,
-      required: true,
+      required: false,
     },
     image: {
       type: String,
-      required: true,
+      required: false,
     },
     status: {
       type: Boolean,
-      required: true,
+      required: false,
     },
   },
   { timestamps: true }
