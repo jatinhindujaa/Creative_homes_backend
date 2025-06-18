@@ -2,7 +2,12 @@ import mongoose, { Schema } from "mongoose";
 
 const whtsapSchema = new Schema(
   {
-    type: {
+    type1: {
+      type: String,
+      required: true,
+      trim: true,
+    },
+    type2: {
       type: String,
       required: true,
       trim: true,

@@ -22,10 +22,10 @@ const createContact = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Contact created!!!", contact));
 });
 const createWhtsap = asyncHandler(async (req, res) => {
-  const { type, phone } = req.body;
+  const { type1,type2, phone } = req.body;
   console.log("req", req.body);
 
-  if (!type || !phone) {
+  if (!type1|| !type2 || !phone) {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
 
