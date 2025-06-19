@@ -69,7 +69,7 @@ const getAllAreas = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponse(200, "Areas fetched successfully", areas));
+    .json(new ApiResponse(200, areas, "Areas fetched successfully"));
 });
 
 const updateArea = asyncHandler(async (req, res) => {

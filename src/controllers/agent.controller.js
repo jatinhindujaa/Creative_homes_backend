@@ -72,7 +72,7 @@ const getAllAgents = asyncHandler(async (req, res) => {
 
   res
     .status(200)
-    .json(new ApiResponse(200, "Agents fetched successfully", agents));
+    .json(new ApiResponse(200, agents, "Agents fetched successfully"));
 });
 
 const updateAgent = asyncHandler(async (req, res) => {

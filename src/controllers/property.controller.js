@@ -3,6 +3,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { Property } from "../models/property.model.js";
+import mongoose from "mongoose";
 
 const createProperty = asyncHandler(async (req, res) => {
   const {
@@ -195,6 +196,16 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (dealType) updatedFields.dealType = dealType;
   if (agent) updatedFields.agent = agent;
   if (area) updatedFields.area = area;
+
+  // if (area) {
+  //   // Ensure area is a valid ObjectId or null
+  //   if (mongoose.Types.ObjectId.isValid(area)) {
+  //     updatedFields.area = area;
+  //   } else {
+  //     updatedFields.area = null; // Or skip the field if it's not valid
+  //   }
+  // }
+
   if (propertytype) updatedFields.propertytype = propertytype;
   if (furnishingtype) updatedFields.furnishingtype = furnishingtype;
   if (offeringtype) updatedFields.offeringtype = offeringtype;
