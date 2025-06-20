@@ -112,6 +112,16 @@ const offplanSchema = new Schema(
       type: String,
       required: true,
     },
+    maplink: {
+      type: String,
+      required: true,
+    },
+
+    order: {
+      type: Number,
+      required: false,
+      trim: true,
+    },
     underpay: {
       type: String,
       required: true,

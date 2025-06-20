@@ -27,32 +27,32 @@ const createProperty = asyncHandler(async (req, res) => {
     dealType,
     agent,
     area,
+    order,
   } = req.body;
 
-  if (
-    !name ||
-    !features ||
-    !price ||
-    !propertytype ||
-    !furnishingtype ||
-    !offeringtype ||
-    !propertycategory ||
-    !bed ||
-    !shower ||
-    !bua ||
-    !plot ||
-    !shortDescription ||
-    !description ||
-    !dealType ||
-    !agent ||
-    // !reference||
-    !zone ||
-    // !dld||
-    !amenities ||
-    !area
-  ) {
-    throw new ApiError(400, "Please fill the required fields!!!");
-  }
+  // if (
+  //   !name ||
+  //   !features ||
+  //   !price ||
+  //   !propertytype ||
+  //   !furnishingtype ||
+  //   !offeringtype ||
+  //   !propertycategory ||
+  //   !bed ||
+  //   !shower ||
+  //   !bua ||
+  //   !plot ||
+  //   !shortDescription ||
+  //   !description ||
+  //   !dealType ||
+  //   !agent ||
+  //   !zone ||
+  //   !amenities ||
+  //   !area ||
+  //   !order
+  // ) {
+  //   throw new ApiError(400, "Please fill the required fields!!!");
+  // }
 
   const multipleImages = [];
 const mobilemultipleImages=[];
@@ -117,6 +117,7 @@ if (imageLocalPath) {
     multipleImages,
     mobilemultipleImages,
     dealType,
+    order,
     agent,
     area,
     status: false,
@@ -171,6 +172,7 @@ const updateProperty = asyncHandler(async (req, res) => {
     agent,
     status,
     area,
+    order,
   } = req.body;
 
   const property = await Property.findById(id);
@@ -196,6 +198,8 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (dealType) updatedFields.dealType = dealType;
   if (agent) updatedFields.agent = agent;
   if (area) updatedFields.area = area;
+  if (order) updatedFields.order = order;
+
 
   // if (area) {
   //   // Ensure area is a valid ObjectId or null

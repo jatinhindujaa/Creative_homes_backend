@@ -436,7 +436,8 @@ const createOffplan = asyncHandler(async (req, res) => {
     developer,
     handoverin,
     description,
-    
+    maplink,
+    order,
     agent,
     floorPlanCategories,
   } = req.body;
@@ -454,7 +455,9 @@ const createOffplan = asyncHandler(async (req, res) => {
     !underpay||
     !handoverpay||
     !developer||
-    !handoverin
+    !handoverin ||
+    !maplink ||
+    !order
   ) {
     throw new ApiError(
       400,
@@ -537,6 +540,8 @@ if (
     mobilemultipleImages,
     agent,
     image,
+    maplink,
+    order,
     floorPlanCategories,
     status: false,
   });
@@ -626,6 +631,8 @@ const updateOffplan = asyncHandler(async (req, res) => {
     handoverin,
     description,
     agent,
+    maplink,
+    order,
     floorPlanCategories,
   } = req.body;
 
@@ -646,6 +653,8 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (handoverin) updatedFields.handoverin = handoverin;
   if (description) updatedFields.description = description;
   if (agent) updatedFields.agent = agent;
+  if (order) updatedFields.order = order;
+  if (maplink) updatedFields.maplink = maplink;
   if (floorPlanCategories)
     updatedFields.floorPlanCategories = floorPlanCategories;
  if (req.files?.image && req.files.image.length > 0) {

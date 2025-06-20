@@ -17,7 +17,7 @@ const getAllNews = asyncHandler(async (req, res) => {
 
 
 const createNews = asyncHandler(async (req, res) => {
-  const { title, date, shortDescription, description, status } = req.body;
+  const { title, date, shortDescription, description, status,order } = req.body;
 
   if (!title || !date || !description) {
     throw new ApiError(
@@ -86,6 +86,7 @@ const createNews = asyncHandler(async (req, res) => {
     description,
     status: status !== undefined ? status : true,
     multipleImages,
+    order,
     mobilemultipleImages,
   });
 const savedNews = await News.findById(news._id);
@@ -99,7 +100,7 @@ const savedNews = await News.findById(news._id);
 
 const updateNews = asyncHandler(async (req, res) => {
   const { id } = req.query;
-  const { title, date, shortDescription, description, status } = req.body;
+  const { title, date, shortDescription, description, status,order } = req.body;
 const news = await News.findById(id);
  if (!news) {
    throw new ApiError(404, "news not found");
@@ -110,6 +111,7 @@ const news = await News.findById(id);
  if (date) updatedFields.date = date;
  if (shortDescription) updatedFields.shortDescription = shortDescription;
  if (description) updatedFields.description = description;
+ if (order) updatedFields.order = order;
  if (status !== undefined) {
    updatedFields.status = status === "true"; // ✅ convert string to boolean
  }

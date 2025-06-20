@@ -89,6 +89,12 @@ const propertySchema = new Schema(
       required: true,
     },
 
+    order: {
+      type: Number,
+      required: false,
+      trim: true,
+    },
+
     status: {
       type: Boolean,
       required: true,

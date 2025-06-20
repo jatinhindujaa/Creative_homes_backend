@@ -17,6 +17,11 @@ const newsSchema = new Schema({
     type: String,
     required: true,
   },
+  order: {
+    type: Number,
+    required: false,
+    trim: true,
+  },
   shortDescription: {
     type: String,
   },
