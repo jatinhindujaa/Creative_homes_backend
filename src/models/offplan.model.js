@@ -105,7 +105,7 @@ const offplanSchema = new Schema(
       trim: true,
     },
     price: {
-      type: Number,
+      type: String,
       required: true,
     },
     firstpay: {
@@ -116,7 +116,6 @@ const offplanSchema = new Schema(
       type: String,
       required: true,
     },
-
     order: {
       type: Number,
       required: false,
