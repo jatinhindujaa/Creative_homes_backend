@@ -345,6 +345,52 @@ const getPropertyByAgentId = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, properties, "Properties fetched successfully"));
 });
 
+// const getPropertyByArea = asyncHandler(async (req, res) => {
+//   const { area } = req.query; // Extract agent ID from query
+
+//   if (!area) {
+//     throw new ApiError(400, "area ID is required");
+//   }
+
+//   // Find properties associated with the agent
+//   const properties = await Property.find({ area: area }); // Assuming agent is a field in the Property model
+// console.log("pro",properties)
+//   // if (!properties || properties.length === 0) {
+//   //   throw new ApiError(404, "No properties found for this agent");
+//   // }
+
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, properties, "Properties fetched successfully"));
+// });
+
+const getPropertyByArea = asyncHandler(async (req, res) => {
+  const { area } = req.query; // Extract area ID from query
+
+  if (!area) {
+    throw new ApiError(400, "area ID is required");
+  }
+
+  // Find properties associated with the area
+  const properties = await Property.find({ area: area }); // Find properties for the given area ID
+  const propertiesCount = await Property.countDocuments({ area: area }); // Count the properties in the specified area
+
+  console.log("properties:", properties);
+  console.log("properties count:", propertiesCount);
+
+  // Respond with both the properties and the count
+  res.status(200).json(
+    new ApiResponse(
+      200,
+      { properties, count: propertiesCount }, // Send properties and count in response
+      "Properties fetched successfully"
+    )
+  );
+});
+
+
+
+
 const getPropertyByAreaId = asyncHandler(async (req, res) => {
   const { area } = req.query; // Extract agent ID from query
 
@@ -449,4 +495,5 @@ export {
   updateMultipleImages,
   deleteMultipleImage,
   getPropertyByAgentId,
+  getPropertyByArea,
 };

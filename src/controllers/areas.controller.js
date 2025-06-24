@@ -1,4 +1,5 @@
 import { Area } from "../models/areas.model.js";
+import { Property } from "../models/property.model.js";
 import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
@@ -61,20 +62,46 @@ if (
     .json(new ApiResponse(200, savedArea, "Area created successfully"));
 });
 
+// const getAllAreas = asyncHandler(async (req, res) => {
+//   const areas = await Area.find();
+//   if (!areas || areas.length === 0) {
+//     throw new ApiError(500, "Something went wrong while fetching the Areas");
+//   }
+
+//   res
+//     .status(200)
+//     .json(new ApiResponse(200, areas, "Areas fetched successfully"));
+// });
 const getAllAreas = asyncHandler(async (req, res) => {
+  // Fetch all areas from the Area collection
   const areas = await Area.find();
+
   if (!areas || areas.length === 0) {
     throw new ApiError(500, "Something went wrong while fetching the Areas");
   }
 
+  // For each area, count how many properties belong to it
+  const areasWithPropertyCount = await Promise.all(
+    areas.map(async (area) => {
+      const propertiesCount = await Property.countDocuments({ area: area._id }); // Count properties for the specific area
+      return {
+        ...area.toObject(), // Convert area to a plain object to manipulate
+        propertiesCount, // Add properties count to the area object
+      };
+    })
+  );
+
+  // Send response with areas and properties count
   res
     .status(200)
-    .json(new ApiResponse(200, areas, "Areas fetched successfully"));
+    .json(
+      new ApiResponse(200, areasWithPropertyCount, "Areas fetched successfully")
+    );
 });
 
 const updateArea = asyncHandler(async (req, res) => {
   const { id } = req.query;
-  const { name, phoneNo, designation, about, status, type } = req.body;
+  const { name, phoneNo, designation, about, status, type,order } = req.body;
 
   const area = await Area.findById(id);
   if (!area) {
@@ -87,6 +114,8 @@ const updateArea = asyncHandler(async (req, res) => {
   if (designation) updatedFields.designation = designation;
   if (about) updatedFields.about = about;
   if (type) updatedFields.type = type;
+  if (order) updatedFields.order = order;
+
   if (status !== undefined) {
     updatedFields.status = status === "true"; // ✅ convert string to boolean
   }

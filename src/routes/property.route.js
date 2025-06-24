@@ -10,6 +10,7 @@ import {
   updateMultipleImages,
   deleteMultipleImage,
   getPropertyByAgentId,
+  getPropertyByArea,
 } from "../controllers/property.controller.js";
 import multer from "multer";
 
@@ -44,7 +45,7 @@ router.route("/delete").get(
 );
 router.route("/get-by-id").get(getPropertyById);
 router.route("/get-by-agentid").get(getPropertyByAgentId);
-
+router.route("/get-by-areaid").get(getPropertyByArea);
 router.route("/update-multiple-images").post(
   // verifyJwt,
   upload.fields([
