@@ -121,6 +121,10 @@ const offplanSchema = new Schema(
       required: false,
       trim: true,
     },
+    address: {
+      type: String,
+      required: true,
+    },
     underpay: {
       type: String,
       required: true,

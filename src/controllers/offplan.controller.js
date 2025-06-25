@@ -437,6 +437,7 @@ const createOffplan = asyncHandler(async (req, res) => {
     handoverin,
     description,
     maplink,
+    address,
     order,
     agent,
     floorPlanCategories,
@@ -457,6 +458,7 @@ const createOffplan = asyncHandler(async (req, res) => {
     !developer||
     !handoverin ||
     !maplink ||
+  !address||
     !order
   ) {
     throw new ApiError(
@@ -541,6 +543,7 @@ if (
     agent,
     image,
     maplink,
+    address,
     order,
     floorPlanCategories,
     status: false,
@@ -625,6 +628,7 @@ const updateOffplan = asyncHandler(async (req, res) => {
     amenities,
     price,
     firstpay,
+    address,
     underpay,
     handoverpay,
     developer,
@@ -655,6 +659,9 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (agent) updatedFields.agent = agent;
   if (order) updatedFields.order = order;
   if (maplink) updatedFields.maplink = maplink;
+  if (address) updatedFields.address = address;
+
+
   if (floorPlanCategories)
     updatedFields.floorPlanCategories = floorPlanCategories;
  if (req.files?.image && req.files.image.length > 0) {
