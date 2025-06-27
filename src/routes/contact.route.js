@@ -5,6 +5,7 @@ import {
   getAllContacts,
   deleteContact,
   createWhtsap,
+  getAllWhatsapp,
 } from "../controllers/contact.controller.js";
 
 const router = Router();
@@ -14,6 +15,9 @@ router.route("/whatsp").post(createWhtsap);
 router.route("/get-all").get(
   // verifyJwt,
   getAllContacts
+);
+router.route("/get-all-whatsapp").get(
+  getAllWhatsapp
 );
 router.route("/delete").get(
   // verifyJwt,

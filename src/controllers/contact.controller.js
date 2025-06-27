@@ -47,6 +47,15 @@ const getAllContacts = asyncHandler(async (req, res) => {
 
   res.status(200).json(new ApiResponse(200, "Contacts found!!!", contacts));
 });
+const getAllWhatsapp = asyncHandler(async (req, res) => {
+  const contacts = await Whtsap.find();
+
+  if (!contacts) {
+    throw new ApiError(500, "Something went wrong!!!");
+  }
+
+  res.status(200).json(new ApiResponse(200, "Whatapp found!!!", contacts));
+});
 
 const deleteContact = asyncHandler(async (req, res) => {
   const contact = await Contact.findById(req.query.id);
@@ -65,4 +74,10 @@ const deleteContact = asyncHandler(async (req, res) => {
   res.status(200).json(new ApiResponse(200, "Contact deleted!!!"));
 });
 
-export { createContact, getAllContacts, deleteContact, createWhtsap };
+export {
+  createContact,
+  getAllContacts,
+  deleteContact,
+  createWhtsap,
+  getAllWhatsapp,
+};
