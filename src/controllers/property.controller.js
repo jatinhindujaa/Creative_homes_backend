@@ -194,12 +194,13 @@ const updateProperty = asyncHandler(async (req, res) => {
   if (plot) updatedFields.plot = plot;
   if (shortDescription) updatedFields.shortDescription = shortDescription;
   if (description) updatedFields.description = description;
-  if (status !== undefined) updatedFields.status = status;
   if (dealType) updatedFields.dealType = dealType;
   if (agent) updatedFields.agent = agent;
   if (area) updatedFields.area = area;
   if (order) updatedFields.order = order;
-
+ if (status !== undefined) {
+   updatedFields.status = status === "true"; // ✅ convert string to boolean
+ }
 
   // if (area) {
   //   // Ensure area is a valid ObjectId or null

@@ -22,6 +22,11 @@ const listpropertySchema = new Schema(
       required: true,
       trim: true,
     },
+    propertytype: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     propertyAddress: {
       type: String,
       required: true,

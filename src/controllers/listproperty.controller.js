@@ -4,9 +4,17 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { ListProperty } from "../models/listproperty.model.js";
 
 const createListProperty = asyncHandler(async (req, res) => {
-  const { name, email, phone, listingtype, propertyAddress } = req.body;
+  const { name, email, phone, listingtype, propertyAddress, propertytype } =
+    req.body;
 
-  if (!name || !email || !phone || !listingtype || !propertyAddress) {
+  if (
+    !name ||
+    !email ||
+    !phone ||
+    !listingtype ||
+    !propertyAddress ||
+    !propertytype
+  ) {
     throw new ApiError(400, "Please fill all required fields!!!");
   }
 

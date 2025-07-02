@@ -624,6 +624,7 @@ const updateOffplan = asyncHandler(async (req, res) => {
   const { id } = req.query;
   const {
     name,
+    status,
     views,
     amenities,
     price,
@@ -660,7 +661,9 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (order) updatedFields.order = order;
   if (maplink) updatedFields.maplink = maplink;
   if (address) updatedFields.address = address;
-
+if (status !== undefined) {
+  updatedFields.status = status === "false"; // ✅ convert string to boolean
+}
 
   if (floorPlanCategories)
     updatedFields.floorPlanCategories = floorPlanCategories;
