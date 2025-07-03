@@ -29,12 +29,15 @@ import teamRouter from "./routes/team.route.js";
 import offplanRouter from "./routes/offplan.route.js";
 import areaRouter from "./routes/areas.route.js";
 import whtsapRouter from "./routes/whtsap.route.js";
+import adminRouter from "./routes/admin.route.js";
+
 
 
 
 
 //routes declaration
 // app.use("/api/v1/admin", adminRouter);
+app.use("/api/v1/admin", adminRouter);
 app.use("/api/v1/property", propertyRouter);
 app.use("/api/v1/agent", agentRouter);
 app.use("/api/v1/contact", contactRouter);

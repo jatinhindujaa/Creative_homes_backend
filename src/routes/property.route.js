@@ -24,6 +24,7 @@ router.route("/create").post(
     { name: "multipleImages", maxCount: 14 },
     { name: "mobilemultipleImages", maxCount: 14 },
     { name: "image", maxCount: 1 },
+    { name: "featuredImage", maxCount: 1 },
   ]),
 
   createProperty
@@ -36,6 +37,7 @@ router.route("/update").post(
     { name: "multipleImages", maxCount: 14 },
     { name: "mobilemultipleImages", maxCount: 14 },
     { name: "image", maxCount: 1 },
+    { name: "featuredImage", maxCount: 1 },
   ]),
   updateProperty
 );

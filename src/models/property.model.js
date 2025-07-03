@@ -84,17 +84,19 @@ const propertySchema = new Schema(
       type: [String],
       required: false,
     },
+    featuredImage: {
+      type: String,
+      required: false,
+    },
     dealType: {
       type: String,
       required: true,
     },
-
     order: {
       type: Number,
       required: false,
       trim: true,
     },
-
     status: {
       type: Boolean,
       required: true,

@@ -514,18 +514,21 @@ if (
   }
 }
   const imageLocalPath = req.files?.image?.[0]?.path;
-  if (!imageLocalPath) {
-    throw new ApiError(400, "Please upload a main image");
-  }
+const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
 
-  const image = await uploadOnCloudinary(imageLocalPath);
-  if (!image) {
-    throw new ApiError(
-      500,
-      "Failed to upload the main image. Please try again"
-    );
-  }
-
+ if (imageLocalPath) {
+   image = await uploadOnCloudinary(imageLocalPath);
+   if (!image) {
+     throw new ApiError(500, "Failed to upload the image. Please try again");
+   }
+ }
+ if (featuredImageLocalPath) {
+   featuredImage = await uploadOnCloudinary(featuredImageLocalPath);
+   if (!featuredImage) {
+     throw new ApiError(500, "Failed to upload the image. Please try again");
+   }
+ }
+  
 
   const offplan = await Offplan.create({
     name,

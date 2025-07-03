@@ -161,6 +161,10 @@ const offplanSchema = new Schema(
       type: String,
       required: true,
     },
+    featuredImage: {
+      type: String,
+      required: false,
+    },
     agent: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Agent",

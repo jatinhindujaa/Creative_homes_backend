@@ -21,14 +21,19 @@ router.route("/create").post(
   upload.fields([
     { name: "multipleImages", maxCount: 14 },
     { name: "image", maxCount: 1 },
+    { name: "featuredImage", maxCount: 1 },
   ]),
 
   createOffplan
 );
 router.route("/get-all").get(getAllProperties);
 router.route("/update").post(
-  // verifyJwt,
-  uploadText.none(),
+   upload.fields([
+    { name: "multipleImages", maxCount: 14 },
+    { name: "mobilemultipleImages", maxCount: 14 },
+    { name: "image", maxCount: 1 },
+    { name: "featuredImage", maxCount: 1 },
+  ]),
   updateOffplan
 );
 router.route("/delete").get(

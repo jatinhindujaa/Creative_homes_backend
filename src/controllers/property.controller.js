@@ -56,6 +56,7 @@ const createProperty = asyncHandler(async (req, res) => {
 
   const multipleImages = [];
 const mobilemultipleImages=[];
+
   if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
     for (let i = 0; i < req.files.multipleImages.length; i++) {
       const imageUrl = await uploadOnCloudinary(
@@ -88,10 +89,20 @@ const mobilemultipleImages=[];
     }
   }
 let image = null;
+let featuredImage = null;
+
 const imageLocalPath = req.files?.image?.[0]?.path;
+const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
+
 if (imageLocalPath) {
   image = await uploadOnCloudinary(imageLocalPath);
   if (!image) {
+    throw new ApiError(500, "Failed to upload the image. Please try again");
+  }
+}
+if (featuredImageLocalPath) {
+  featuredImage = await uploadOnCloudinary(featuredImageLocalPath);
+  if (!featuredImage) {
     throw new ApiError(500, "Failed to upload the image. Please try again");
   }
 }
@@ -122,6 +133,7 @@ if (imageLocalPath) {
     area,
     status: false,
     ...(image && { image }),
+    ...(featuredImage && { featuredImage }),
   });
 
   const savedProperty = await Property.findById(property._id);
@@ -224,6 +236,15 @@ const updateProperty = asyncHandler(async (req, res) => {
     }
     updatedFields.image = uploadedImage;
   }
+  if (req.files?.featuredImage && req.files.featuredImage.length > 0) {
+    const uploadedImage = await uploadOnCloudinary(
+      req.files.featuredImage[0].path
+    );
+    if (!uploadedImage) {
+      throw new ApiError(500, "Failed to upload QR image");
+    }
+    updatedFields.featuredImage = uploadedImage;
+  }
 
   // Handle multiple property images if provided
   if (req.files?.multipleImages && req.files.multipleImages.length > 0) {
@@ -269,7 +290,7 @@ const updateProperty = asyncHandler(async (req, res) => {
   res
     .status(200)
     .json(
-      new ApiResponse(200, updatedProperty, "Property updated successfully")
+      new ApiResponse(200, "Property updated successfully", updatedProperty)
     );
 });
 
