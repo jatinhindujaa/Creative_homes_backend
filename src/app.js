@@ -1,5 +1,5 @@
 import e from "express";
-import cors from "cors";
+// import cors from "cors";
 import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
@@ -8,13 +8,13 @@ dotenv.config();
 const app = e();
 app.use(e.json({ limit: "25mb" }));
 app.use(e.urlencoded({ extended: true, limit: "25mb" }));
-app.use(
-  cors({
-    origin: process.env.CORS_ORIGIN,
-    credentials: true,
-    origin: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: process.env.CORS_ORIGIN,
+//     credentials: true,
+//     origin: true,
+//   })
+// );
 
 app.use(e.static("public"));
 app.use(cookieParser());
