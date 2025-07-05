@@ -665,7 +665,7 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (maplink) updatedFields.maplink = maplink;
   if (address) updatedFields.address = address;
 if (status !== undefined) {
-  updatedFields.status = status === "false"; // ✅ convert string to boolean
+  updatedFields.status = status === "true"; // ✅ convert string to boolean
 }
 
   if (floorPlanCategories)
