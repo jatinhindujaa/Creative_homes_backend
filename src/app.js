@@ -28,7 +28,10 @@ import teamRouter from "./routes/team.route.js";
 import offplanRouter from "./routes/offplan.route.js";
 import areaRouter from "./routes/areas.route.js";
 import whtsapRouter from "./routes/whtsap.route.js";
+import newsletterRouter from "./routes/newsletter.route.js";
 import adminRouter from "./routes/admin.route.js";
+import brousherRouter from "./routes/brousher.route.js";
+
 
 
 app.use("/api/v1/admin", adminRouter);
@@ -41,6 +44,10 @@ app.use("/api/v1/team", teamRouter);
 app.use("/api/v1/offplan", offplanRouter);
 app.use("/api/v1/area", areaRouter);
 app.use("/api/v1/whtsap", whtsapRouter);
+app.use("/api/v1/newsletter", newsletterRouter);
+app.use("/api/v1/brousher", brousherRouter);
+
+
 
 
 

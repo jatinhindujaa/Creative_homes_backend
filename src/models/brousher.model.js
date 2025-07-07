@@ -22,7 +22,7 @@ const brousherSchema = new Schema(
       required: true,
       trim: true,
     },
-    brousherid: {
+    propertyid: {
       type: String,
       required: true,
       trim: true,

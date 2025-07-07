@@ -513,6 +513,8 @@ if (
     mobilemultipleImages.push(mobileImageUrl); // Push to mobilemultipleImages
   }
 }
+let image = null;
+let featuredImage = null;
   const imageLocalPath = req.files?.image?.[0]?.path;
 const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
 
@@ -523,7 +525,7 @@ const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
    }
  }
  if (featuredImageLocalPath) {
-   featuredImage = await uploadOnCloudinary(featuredImageLocalPath);
+    featuredImage = await uploadOnCloudinary(featuredImageLocalPath);
    if (!featuredImage) {
      throw new ApiError(500, "Failed to upload the image. Please try again");
    }
@@ -544,12 +546,13 @@ const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
     multipleImages,
     mobilemultipleImages,
     agent,
-    image,
     maplink,
     address,
     order,
     floorPlanCategories,
     status: false,
+    ...(image && { image }),
+    ...(featuredImage && { featuredImage }),
   });
 
   const savedOffplan = await Offplan.findById(offplan._id);
