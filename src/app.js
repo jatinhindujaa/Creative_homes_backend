@@ -31,6 +31,8 @@ import whtsapRouter from "./routes/whtsap.route.js";
 import newsletterRouter from "./routes/newsletter.route.js";
 import adminRouter from "./routes/admin.route.js";
 import brousherRouter from "./routes/brousher.route.js";
+import openingRouter from "./routes/opening.route.js";
+import careerRouter from "./routes/career.route.js";
 
 
 
@@ -46,6 +48,8 @@ app.use("/api/v1/area", areaRouter);
 app.use("/api/v1/whtsap", whtsapRouter);
 app.use("/api/v1/newsletter", newsletterRouter);
 app.use("/api/v1/brousher", brousherRouter);
+app.use("/api/v1/openings", openingRouter);
+app.use("/api/v1/careers", careerRouter);
 
 
 
