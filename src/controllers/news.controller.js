@@ -156,7 +156,7 @@ const news = await News.findById(id);
 
   res
     .status(200)
-    .json(new ApiResponse(200, updatedNews, "News item updated successfully"));
+    .json(new ApiResponse(200, "News item updated successfully", updatedNews));
 });
 
 const deleteNews = asyncHandler(async (req, res) => {

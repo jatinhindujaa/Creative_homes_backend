@@ -440,6 +440,7 @@ const createOffplan = asyncHandler(async (req, res) => {
     address,
     order,
     agent,
+    area,
     floorPlanCategories,
   } = req.body;
 
@@ -453,6 +454,7 @@ const createOffplan = asyncHandler(async (req, res) => {
     !agent ||
     !floorPlanCategories ||
      !firstpay||
+     !area||
     !underpay||
     !handoverpay||
     !developer||
@@ -546,6 +548,7 @@ const featuredImageLocalPath = req.files?.featuredImage?.[0]?.path;
     multipleImages,
     mobilemultipleImages,
     agent,
+    area,
     maplink,
     address,
     order,
@@ -642,6 +645,7 @@ const updateOffplan = asyncHandler(async (req, res) => {
     handoverin,
     description,
     agent,
+    area,
     maplink,
     order,
     floorPlanCategories,
@@ -664,6 +668,8 @@ const updateOffplan = asyncHandler(async (req, res) => {
   if (handoverin) updatedFields.handoverin = handoverin;
   if (description) updatedFields.description = description;
   if (agent) updatedFields.agent = agent;
+  if (area) updatedFields.area = area;
+
   if (order) updatedFields.order = order;
   if (maplink) updatedFields.maplink = maplink;
   if (address) updatedFields.address = address;
@@ -724,7 +730,7 @@ if (status !== undefined) {
 
   res
     .status(200)
-    .json(new ApiResponse(200, updatedOffplan, "Offplan updated successfully"));
+    .json(new ApiResponse(200, "Offplan updated successfully", updatedOffplan));
 });
 
 const deleteOffplan = asyncHandler(async (req, res) => {
