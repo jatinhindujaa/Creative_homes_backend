@@ -5,24 +5,68 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 
-const createCareer = asyncHandler(async (req, res) => {
-  const {
-    position,
-    name,
-    email,
-    phone,
-  } = req.body;
+// const createCareer = asyncHandler(async (req, res) => {
+//   const {
+//     position,
+//     name,
+//     email,
+//     phone,
+//   } = req.body;
 
-  if (!position || !email || !name || !phone ) {
+//   if (!position || !email || !name || !phone ) {
+//     throw new ApiError(400, "Please fill the required fields!!!");
+//   }
+// const fileLocalPath = req.files?.resume ? req.files.resume[0]?.path : null;
+// if (!fileLocalPath) {
+//   throw new ApiError(400, "Resume is required!!!");
+// }
+
+//   const file = await uploadOnCloudinary(fileLocalPath);
+//   console.log("file", file);
+//   if (!file) {
+//     throw new ApiError(500, "File failed to upload");
+//   }
+//   console.log("file2", file);
+
+//   const career = await Careers.create({
+//     position,
+//     name,
+//     email,
+//     phone,
+//     resume: file.url,
+//   });
+// console.log("career", career);
+//   if (!career) {
+//     throw new ApiError(
+//       500,
+//       "Something went wrong while creating the Career!!!"
+//     );
+//   }
+
+//   return res
+//     .status(200)
+//     .json(new ApiResponse(200, "Career created successfully!!!", career));
+// });
+
+
+const createCareer = asyncHandler(async (req, res) => {
+  const { position, name, email, phone } = req.body;
+
+  if (!position || !email || !name || !phone) {
     throw new ApiError(400, "Please fill the required fields!!!");
   }
-const fileLocalPath = req.files?.resume ? req.files.resume[0]?.path : null;
-if (!fileLocalPath) {
-  throw new ApiError(400, "Resume is required!!!");
-}
+
+  const fileLocalPath = req.files?.resume?.[0]?.path || null;
+
+  if (!fileLocalPath) {
+    throw new ApiError(400, "Resume is required!!!");
+  }
 
   const file = await uploadOnCloudinary(fileLocalPath);
+  console.log("Cloudinary response:", file);
+
   if (!file) {
+    // ✅ Changed this line
     throw new ApiError(500, "File failed to upload");
   }
 
@@ -31,8 +75,10 @@ if (!fileLocalPath) {
     name,
     email,
     phone,
-    resume: file.url,
+    resume: file, // ✅ Changed this line
   });
+
+  console.log("career", career);
 
   if (!career) {
     throw new ApiError(
@@ -45,7 +91,6 @@ if (!fileLocalPath) {
     .status(200)
     .json(new ApiResponse(200, "Career created successfully!!!", career));
 });
-
 const getAllCareers = asyncHandler(async (req, res) => {
   const allCareers = await Careers.find();
   if (!allCareers) {

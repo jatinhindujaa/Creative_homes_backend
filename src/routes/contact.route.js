@@ -6,24 +6,24 @@ import {
   deleteContact,
   createEmail,
   getAllEmail,
-  createBrousher,
-  getAllBrousher,
+  createBrochure,
+  getAllBrochure,
 } from "../controllers/contact.controller.js";
 
 const router = Router();
 
 router.route("/create").post(createContact);
 router.route("/email").post(createEmail);
-router.route("/brousher").post(createBrousher);
+router.route("/brochure").post(createBrochure);
 
 
 router.route("/get-all").get(
   // verifyJwt,
   getAllContacts
 );
-router.route("/get-all-brousher").get(
+router.route("/get-all-brochure").get(
   // verifyJwt,
-  getAllBrousher
+  getAllBrochure
 );
 router.route("/get-all-emails").get(
   getAllEmail
