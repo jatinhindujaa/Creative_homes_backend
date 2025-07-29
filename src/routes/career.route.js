@@ -18,8 +18,8 @@ router
     createCareer
   );
 router.route("/get-all").get(getAllCareers);
-router.route("/delete").get(verifyJwt, deleteCareer);
-router.route("/block-careers").patch(verifyJwt, blockCareers);
-router.route("/unblock-careers").patch(verifyJwt, unblockCareers);
+router.route("/delete").get(deleteCareer);
+router.route("/block-careers").patch(blockCareers);
+router.route("/unblock-careers").patch(unblockCareers);
 
 export default router;

@@ -13,11 +13,11 @@ import { verifyJwt } from "../middlewares/auth.middleware.js";
 const router = Router();
 
 router.route("/create").post(createOpening);
-router.route("/update").post(verifyJwt, updateOpening);
-router.route("/delete").get(verifyJwt, deleteOpening);
-router.route("/getbyId").get(verifyJwt, getOpeningById);
-router.route("/block-opening").patch(verifyJwt, blockOpening);
-router.route("/unblock-opening").patch(verifyJwt, unblockOpening);
+router.route("/update").post(updateOpening);
+router.route("/delete").get( deleteOpening);
+router.route("/getbyId").get(getOpeningById);
+router.route("/block-opening").patch( blockOpening);
+router.route("/unblock-opening").patch( unblockOpening);
 router.route("/get-all").get(getAllOpenings);
 
 export default router;
